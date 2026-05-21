@@ -7,84 +7,72 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  :root {
-    --red:#FF441B; --orange:#FF6B35; --cream:#FAF3EB;
-    --dark:#1A1A1A; --mid:#555; --light:#888; --border:#E8E2D9;
-    --white:#FFFFFF; --green:#1A3A5C;
-    --critica-bg:#FFF0ED;--critica-text:#C0300D;
-    --alta-bg:#FFF7E6;--alta-text:#A05C00;
-    --media-bg:#EEF3FF;--media-text:#2B4BB5;
-    --baja-bg:#F0FAF4;--baja-text:#1A7A3C;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:14px;line-height:1.5;}
-
-  .topbar{background:var(--dark);color:#fff;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;}
-  .rappi-logo{font-size:18px;font-weight:600;color:var(--orange);letter-spacing:-0.5px;}
-  .topbar-sep{width:1px;height:20px;background:#333;}
-  .topbar-title{font-size:13px;color:#aaa;font-weight:400;}
-  .semana-badge{font-family:'DM Mono',monospace;font-size:11px;background:#2a2a2a;border:1px solid #333;color:#ccc;padding:3px 10px;border-radius:20px;}
-  .cv-tag{font-size:11px;font-weight:600;color:#2ecc71;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);padding:3px 10px;border-radius:20px;}
-
-  .container{max-width:1280px;margin:0 auto;padding:1.5rem 2rem 3rem;}
-
-  .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:1.5rem;}
-  .kpi{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;}
-  .kpi-label{font-size:11px;font-weight:500;color:var(--light);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
-  .kpi-val{font-size:26px;font-weight:600;color:var(--dark);line-height:1;}
-  .kpi-val.neg{color:var(--red);}
-  .kpi-val.warn{color:#A05C00;}
-  .kpi-val.info{color:#2B4BB5;}
-  .kpi-sub{font-size:11px;color:var(--light);margin-top:4px;}
-
-  .charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:12px;}
-  .card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.25rem;}
-  .card-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--light);margin-bottom:1rem;}
-
-  .legend{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap;}
-  .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mid);}
-  .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
-
-  .filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .filter-label{font-size:11px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:.05em;}
-  .filter-btn{border:1px solid var(--border);background:var(--white);border-radius:6px;padding:4px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--mid);cursor:pointer;transition:all .15s;}
-  .filter-btn:hover{border-color:var(--red);color:var(--red);}
-  .filter-btn.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:500;}
-
-  .table-wrap{overflow-x:auto;}
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  thead th{text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--light);padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;}
-  tbody td{padding:8px 10px;border-bottom:1px solid #F5F0EA;color:var(--dark);}
-  tbody tr:last-child td{border-bottom:none;}
-  tbody tr:hover td{background:#FAF6F1;}
-  .num{font-family:'DM Mono',monospace;font-size:12px;}
-  .delta-pos{color:#1A7A3C;font-weight:600;}
-  .delta-neg{color:var(--red);font-weight:600;}
-  .delta-neu{color:var(--light);}
-
-  .badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
-  .b-critica{background:var(--critica-bg);color:var(--critica-text);}
-  .b-alta{background:var(--alta-bg);color:var(--alta-text);}
-  .b-media{background:var(--media-bg);color:var(--media-text);}
-  .b-baja{background:var(--baja-bg);color:var(--baja-text);}
-
-  .trend-up{color:#1A7A3C;}
-  .trend-dn{color:var(--red);}
-  .trend-fl{color:var(--light);}
-
-  .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-  .footer{text-align:center;font-size:11px;color:var(--light);padding-top:1rem;border-top:1px solid var(--border);}
-  .footer span{color:var(--red);font-weight:600;}
-
-  @media(max-width:900px){
-    .kpi-strip{grid-template-columns:repeat(3,1fr);}
-    .charts-row,.bottom-row{grid-template-columns:1fr;}
-    .container{padding:1rem;}
-  }
+:root{--red:#FF441B;--orange:#FF6B35;--cream:#FAF3EB;--dark:#1A1A1A;--mid:#555;--light:#888;--border:#E8E2D9;--white:#FFFFFF;
+--critica-bg:#FFF0ED;--critica-text:#C0300D;--alta-bg:#FFF7E6;--alta-text:#A05C00;--media-bg:#EEF3FF;--media-text:#2B4BB5;--baja-bg:#F0FAF4;--baja-text:#1A7A3C;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:14px;line-height:1.5;}
+.topbar{background:var(--dark);color:#fff;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;}
+.rappi-logo{font-size:18px;font-weight:600;color:var(--orange);letter-spacing:-0.5px;}
+.topbar-sep{width:1px;height:20px;background:#333;}
+.topbar-title{font-size:13px;color:#aaa;}
+.semana-badge{font-family:'DM Mono',monospace;font-size:11px;background:#2a2a2a;border:1px solid #333;color:#ccc;padding:3px 10px;border-radius:20px;}
+.cv-tag{font-size:11px;font-weight:600;color:#2ecc71;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);padding:3px 10px;border-radius:20px;}
+.container{max-width:1280px;margin:0 auto;padding:1.5rem 2rem 3rem;}
+.section-header{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--light);margin:1.5rem 0 .75rem;padding-left:2px;border-left:3px solid var(--red);}
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:1.5rem;}
+.kpi{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;}
+.kpi-label{font-size:11px;font-weight:500;color:var(--light);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.kpi-val{font-size:26px;font-weight:600;color:var(--dark);line-height:1;}
+.kpi-val.neg{color:var(--red);}
+.kpi-val.warn{color:#A05C00;}
+.kpi-val.info{color:#2B4BB5;}
+.kpi-sub{font-size:11px;color:var(--light);margin-top:4px;}
+.charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:12px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.25rem;}
+.card-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--light);margin-bottom:1rem;}
+.legend{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mid);}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.filter-label{font-size:11px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:.05em;}
+.filter-btn{border:1px solid var(--border);background:var(--white);border-radius:6px;padding:4px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--mid);cursor:pointer;transition:all .15s;}
+.filter-btn:hover{border-color:var(--red);color:var(--red);}
+.filter-btn.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:500;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--light);padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;}
+tbody td{padding:8px 10px;border-bottom:1px solid #F5F0EA;color:var(--dark);}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:#FAF6F1;}
+.num{font-family:'DM Mono',monospace;font-size:12px;}
+.delta-pos{color:#1A7A3C;font-weight:600;}
+.delta-neg{color:var(--red);font-weight:600;}
+.delta-neu{color:var(--light);}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
+.b-critica{background:var(--critica-bg);color:var(--critica-text);}
+.b-alta{background:var(--alta-bg);color:var(--alta-text);}
+.b-media{background:var(--media-bg);color:var(--media-text);}
+.b-baja{background:var(--baja-bg);color:var(--baja-text);}
+.trend-up{color:#1A7A3C;}
+.trend-dn{color:var(--red);}
+.trend-fl{color:var(--light);}
+.bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.swa-bar-wrap{display:flex;align-items:center;gap:8px;}
+.swa-bar{height:6px;border-radius:3px;flex:1;background:#F0EDE8;}
+.swa-fill{height:6px;border-radius:3px;}
+.footer{text-align:center;font-size:11px;color:var(--light);padding-top:1rem;border-top:1px solid var(--border);}
+.footer span{color:var(--red);font-weight:600;}
+.store-search{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;margin-bottom:12px;outline:none;}
+.store-search:focus{border-color:var(--red);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+@media(max-width:900px){
+  .kpi-strip{grid-template-columns:repeat(3,1fr);}
+  .charts-row,.bottom-row,.two-col{grid-template-columns:1fr;}
+  .container{padding:1rem;}
+}
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:12px;">
     <span class="rappi-logo">rappi</span>
@@ -99,8 +87,11 @@
 
 <div class="container">
 
+  <!-- KPIs -->
   <div class="kpi-strip" id="kpiStrip"></div>
 
+  <!-- TENDENCIA + L1 -->
+  <div class="section-header">Tendencia & Categorías</div>
   <div class="charts-row">
     <div class="card">
       <div class="card-title">Tendencia SWA 7d · 04–21 Mayo 2026</div>
@@ -111,7 +102,7 @@
       <div style="position:relative;width:100%;height:210px;"><canvas id="chartTrend" role="img" aria-label="Tendencia SWA Cruz Verde"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-title">SWA por categoría L1</div>
+      <div class="card-title">SWA por categoría L1 · 11/05 vs 18/05</div>
       <div class="legend">
         <div class="legend-item"><div class="legend-dot" style="background:#B5D4F4;"></div>11/05</div>
         <div class="legend-item"><div class="legend-dot" style="background:#FF441B;"></div>18/05</div>
@@ -120,6 +111,7 @@
     </div>
   </div>
 
+  <!-- CAIDAS + RESUMEN -->
   <div class="bottom-row">
     <div class="card">
       <div class="card-title">Top caídas L2 · ∆ SWA (pp)</div>
@@ -132,8 +124,8 @@
         <tbody id="l1Table"></tbody>
       </table>
       <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
-        <div style="display:flex;justify-content:space-between;font-size:12px;">
-          <span style="color:var(--light);font-weight:600;">TOTAL</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
+          <span style="color:var(--light);font-weight:600;text-transform:uppercase;font-size:10px;">Total</span>
           <span class="num">87.81%</span>
           <span class="num">84.49%</span>
           <span class="num delta-neg">-3.32</span>
@@ -143,9 +135,11 @@
     </div>
   </div>
 
-  <div class="card">
+  <!-- TABLA L2 -->
+  <div class="section-header">Detalle por categoría L2</div>
+  <div class="card" style="margin-bottom:12px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:8px;">
-      <div class="card-title" style="margin-bottom:0;">Detalle por categoría L2 · Cruz Verde MT · Sem. 18/05/2026</div>
+      <div class="card-title" style="margin-bottom:0;">29 categorías · Sem. 18/05/2026</div>
       <div class="filter-bar">
         <span class="filter-label">Ver:</span>
         <button class="filter-btn active" onclick="filterTable('TODAS',this)">Todas</button>
@@ -163,139 +157,212 @@
     </div>
   </div>
 
+  <!-- TIENDAS -->
+  <div class="section-header">SWA por tienda física · 158 tiendas</div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Top 10 tiendas con menor SWA</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tienda</th><th>SWA</th><th>Peso 7d</th><th>Estado</th></tr></thead>
+        <tbody id="worstStores"></tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top 10 tiendas con mayor SWA</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tienda</th><th>SWA</th><th>Peso 7d</th><th>Estado</th></tr></thead>
+        <tbody id="bestStores"></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:8px;">
+      <div class="card-title" style="margin-bottom:0;">Todas las tiendas</div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterStores('TODAS',this)">Todas</button>
+        <button class="filter-btn" onclick="filterStores('CRÍTICA',this)">Crítica &lt;75%</button>
+        <button class="filter-btn" onclick="filterStores('ALTA',this)">Alta 75-80%</button>
+        <button class="filter-btn" onclick="filterStores('MEDIA',this)">Media 80-85%</button>
+        <button class="filter-btn" onclick="filterStores('BAJA',this)">Buena &gt;85%</button>
+      </div>
+    </div>
+    <input type="text" class="store-search" id="storeSearch" placeholder="Buscar tienda..." oninput="renderStoresTable()">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Tienda</th><th>SWA</th><th>Barra</th><th>Peso 7d</th><th>Estado</th></tr></thead>
+        <tbody id="storesTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <div class="section-header">Productos con baja disponibilidad · SWA &lt; 50%</div>
+  <div class="card" style="margin-bottom:12px;">
+    <div class="card-title" style="margin-bottom:.75rem;">Top 50 productos con mayor impacto (por peso)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Producto</th><th>SWA</th><th>Peso 7d</th></tr></thead>
+        <tbody id="productsTable"></tbody>
+      </table>
+    </div>
+  </div>
+
   <div class="footer" style="margin-top:1.5rem;">
     <span>Rappi FARMA CO</span> · KAM Analytics · Cruz Verde MT · Mayo 2026
   </div>
 </div>
 
 <script>
+const D = {"caidas":[{"l2":"Depilación y afeitado","l1":"Farmacia","swa_ant":67.83,"swa_act":46.79,"delta":-21.04,"atc":88.0,"peso":265.0,"severidad":"CRÍTICA","trend":"▼"},{"l2":"Protección femenina","l1":"Cuidado personal","swa_ant":88.89,"swa_act":77.41,"delta":-11.48,"atc":648.0,"peso":1943.0,"severidad":"CRÍTICA","trend":"▼"},{"l2":"Higiene y cuidado","l1":"Cuidado personal","swa_ant":87.19,"swa_act":77.39,"delta":-9.8,"atc":289.0,"peso":867.0,"severidad":"ALTA","trend":"▼"},{"l2":"Salud visual","l1":"Farmacia","swa_ant":87.38,"swa_act":77.82,"delta":-9.56,"atc":733.0,"peso":2200.0,"severidad":"ALTA","trend":"▼"},{"l2":"Cuidado oral","l1":"Farmacia","swa_ant":87.78,"swa_act":79.9,"delta":-7.88,"atc":915.0,"peso":2746.0,"severidad":"ALTA","trend":"▼"},{"l2":"Cuidado dermatológico","l1":"Farmacia","swa_ant":86.24,"swa_act":80.0,"delta":-6.24,"atc":1700.0,"peso":5100.0,"severidad":"ALTA","trend":"▼"},{"l2":"Desodorantes","l1":"Cuidado personal","swa_ant":78.41,"swa_act":72.53,"delta":-5.88,"atc":360.0,"peso":1081.0,"severidad":"ALTA","trend":"▼"},{"l2":"Otros medicamentos","l1":"Farmacia","swa_ant":83.28,"swa_act":78.03,"delta":-5.24,"atc":3382.0,"peso":10147.0,"severidad":"ALTA","trend":"▼"},{"l2":"Alergias","l1":"Farmacia","swa_ant":86.72,"swa_act":81.91,"delta":-4.81,"atc":958.0,"peso":2874.0,"severidad":"MEDIA","trend":"▼"},{"l2":"Medicamentos para la Diabetes","l1":"Farmacia","swa_ant":91.52,"swa_act":87.62,"delta":-3.89,"atc":407.0,"peso":1220.0,"severidad":"MEDIA","trend":"▼"},{"l2":"Gripa y tos","l1":"Farmacia","swa_ant":92.93,"swa_act":89.11,"delta":-3.82,"atc":4893.0,"peso":14678.0,"severidad":"MEDIA","trend":"▼"},{"l2":"Cuidado facial","l1":"Cuidado personal","swa_ant":87.34,"swa_act":84.01,"delta":-3.34,"atc":727.0,"peso":2182.0,"severidad":"MEDIA","trend":"▼"},{"l2":"Salud sexual","l1":"Farmacia","swa_ant":89.3,"swa_act":86.5,"delta":-2.8,"atc":3969.0,"peso":11908.0,"severidad":"MEDIA","trend":"▼"},{"l2":"Productos naturales","l1":"Farmacia","swa_ant":84.44,"swa_act":81.77,"delta":-2.66,"atc":349.0,"peso":1048.0,"severidad":"MEDIA","trend":"▼"},{"l2":"Cuidado corporal","l1":"Cuidado personal","swa_ant":80.58,"swa_act":78.16,"delta":-2.43,"atc":496.0,"peso":1488.0,"severidad":"MEDIA","trend":"▼"},{"l2":"Salud digestiva","l1":"Farmacia","swa_ant":91.55,"swa_act":89.16,"delta":-2.39,"atc":5898.0,"peso":17695.0,"severidad":"MEDIA","trend":"▼"},{"l2":"Fórmulas y alimentos","l1":"Cuidado del bebé","swa_ant":84.75,"swa_act":82.9,"delta":-1.85,"atc":719.0,"peso":2158.0,"severidad":"BAJA","trend":"→"},{"l2":"Salud nutricional","l1":"Farmacia","swa_ant":88.47,"swa_act":86.71,"delta":-1.76,"atc":2170.0,"peso":6510.0,"severidad":"BAJA","trend":"→"},{"l2":"Protección incontinencia","l1":"Farmacia","swa_ant":70.38,"swa_act":69.06,"delta":-1.32,"atc":167.0,"peso":501.0,"severidad":"BAJA","trend":"→"},{"l2":"Alivio del dolor","l1":"Farmacia","swa_ant":86.61,"swa_act":85.76,"delta":-0.85,"atc":3827.0,"peso":11482.0,"severidad":"BAJA","trend":"→"},{"l2":"Equipo y material médico","l1":"Farmacia","swa_ant":80.88,"swa_act":80.29,"delta":-0.59,"atc":482.0,"peso":1446.0,"severidad":"BAJA","trend":"→"},{"l2":"Botiquín y primeros auxilios","l1":"Farmacia","swa_ant":82.83,"swa_act":82.34,"delta":-0.5,"atc":1570.0,"peso":4710.0,"severidad":"BAJA","trend":"→"},{"l2":"Cuidado del cabello","l1":"Cuidado personal","swa_ant":83.44,"swa_act":83.06,"delta":-0.38,"atc":403.0,"peso":1210.0,"severidad":"BAJA","trend":"→"},{"l2":"Fragancias","l1":"Cuidado personal","swa_ant":100.0,"swa_act":100.0,"delta":0.0,"atc":1.0,"peso":2.0,"severidad":"BAJA","trend":"→"},{"l2":"Lactancia y accesorios","l1":"Cuidado del bebé","swa_ant":100.0,"swa_act":100.0,"delta":0.0,"atc":1.0,"peso":3.0,"severidad":"BAJA","trend":"→"},{"l2":"Accesorios de belleza","l1":"Cuidado personal","swa_ant":80.14,"swa_act":82.28,"delta":2.14,"atc":53.0,"peso":158.0,"severidad":"BAJA","trend":"▲"},{"l2":"Pañales y toallitas","l1":"Cuidado del bebé","swa_ant":83.29,"swa_act":85.93,"delta":2.64,"atc":334.0,"peso":1002.0,"severidad":"BAJA","trend":"▲"},{"l2":"Cuidado de los pies","l1":"Farmacia","swa_ant":78.22,"swa_act":81.75,"delta":3.53,"atc":42.0,"peso":126.0,"severidad":"BAJA","trend":"▲"},{"l2":"Mundo COVID","l1":"Farmacia","swa_ant":71.43,"swa_act":100.0,"delta":28.57,"atc":1.0,"peso":2.0,"severidad":"BAJA","trend":"▲"}],"trend":{"labels":["04/05","05/05","06/05","07/05","08/05","09/05","10/05","11/05","12/05","13/05","14/05","15/05","16/05","17/05","18/05","19/05","20/05","21/05"],"teorico":[81.7,84.1,86.8,90.6,75.9,84.8,86.1,86.9,87.9,88.0,91.3,91.6,90.3,90.5,83.9,78.3,84.1,81.9],"real":[81.0,84.1,86.2,null,null,null,84.8,85.2,85.7,85.4,88.0,88.5,90.3,87.7,87.9,null,81.9,80.0]},"l1":[{"cat":"Farmacia","swa_ant":88.25,"swa_act":85.25,"delta":-3.0,"sev":"MEDIA"},{"cat":"Cuidado personal","swa_ant":84.99,"swa_act":78.94,"delta":-6.05,"sev":"ALTA"},{"cat":"Cuidado del bebé","swa_ant":84.93,"swa_act":82.48,"delta":-2.45,"sev":"MEDIA"}],"semana":"18/05/2026","aliado":"Cruz Verde MT","stores":[{"name":"Cruz Verde, Carrera 65 - 698","peso":317,"swa":62.46,"sev":"CRÍTICA"},{"name":"Cruz verde, guadalcanal - 1526","peso":6944,"swa":71.34,"sev":"CRÍTICA"},{"name":"Cruz Verde, Mall Plaza Hills - 1074","peso":3660,"swa":71.83,"sev":"CRÍTICA"},{"name":"Cruz Verde, Milan - 94","peso":2844,"swa":73.31,"sev":"CRÍTICA"},{"name":"Cruz Verde, Villa Campestre 2 - 1063","peso":7468,"swa":73.62,"sev":"CRÍTICA"},{"name":"Cruz Verde, Mall Drive In - 948","peso":7300,"swa":76.33,"sev":"ALTA"},{"name":"Cruz Verde, Polo Club - 343","peso":4432,"swa":76.47,"sev":"ALTA"},{"name":"Cruz Verde, Boca grande - 185","peso":3048,"swa":77.33,"sev":"ALTA"},{"name":"Cruz Verde, Medical Center - 496","peso":5508,"swa":77.45,"sev":"ALTA"},{"name":"Cruz Verde, Cajicá Cra 6 - 324","peso":6516,"swa":77.66,"sev":"ALTA"},{"name":"Cruz Verde U. Nacional - 733","peso":3998,"swa":77.71,"sev":"ALTA"},{"name":"Cruz Verde, La Novena - 1112","peso":2760,"swa":77.93,"sev":"ALTA"},{"name":"Cruz Verde, Mall Gran Vía - 840","peso":9279,"swa":78.2,"sev":"ALTA"},{"name":"Cruz Verde, CC Astro Plaza - 1172","peso":2676,"swa":78.29,"sev":"ALTA"},{"name":"Cruz verde, calle 93 - 468","peso":11098,"swa":78.54,"sev":"ALTA"},{"name":"Cruz Verde, Chipre - 89","peso":3993,"swa":78.86,"sev":"ALTA"},{"name":"Cruz Verde, Santa Biblia - 506","peso":5291,"swa":78.98,"sev":"ALTA"},{"name":"Cruz Verde, La Esmeralda - 625","peso":3626,"swa":79.12,"sev":"ALTA"},{"name":"Cruz Verde, Villa María - 1097","peso":6521,"swa":79.24,"sev":"ALTA"},{"name":"Cruz Verde, Mall del Este - 862","peso":4289,"swa":79.27,"sev":"ALTA"},{"name":"Cruz Verde, Parque Usaquén - 669","peso":9449,"swa":79.71,"sev":"ALTA"},{"name":"Cruz Verde, Centro Internacional de Especialistas - 606","peso":1201,"swa":79.85,"sev":"ALTA"},{"name":"Cruz Verde, Calle 52 (Antes Punto Farma) - 538","peso":7820,"swa":79.96,"sev":"ALTA"},{"name":"Cruz Verde, Torres de San José - 560","peso":8015,"swa":80.21,"sev":"MEDIA"},{"name":"Cruz Verde, 30 Living - 1235","peso":10880,"swa":80.29,"sev":"MEDIA"},{"name":"Cruz Verde, Meridiano 13 - 1031","peso":5619,"swa":80.33,"sev":"MEDIA"},{"name":"Cruz Verde, San Patricio - 1201","peso":13201,"swa":80.42,"sev":"MEDIA"},{"name":"Cruz Verde, Concor 2 - 535","peso":6036,"swa":80.45,"sev":"MEDIA"},{"name":"Cruz Verde, Granada Hills - 1090","peso":1208,"swa":80.46,"sev":"MEDIA"},{"name":"Cruz Verde, Villa del Este - 1215","peso":18854,"swa":80.47,"sev":"MEDIA"},{"name":"Cruz Verde Torres de Sacramento","peso":5173,"swa":80.57,"sev":"MEDIA"},{"name":"Cruz Verde, Carrera 39 - 659","peso":14391,"swa":80.72,"sev":"MEDIA"},{"name":"Cruz Verde, C.C Caobos - 734","peso":7402,"swa":80.76,"sev":"MEDIA"},{"name":"Cruz Verde, Oasis de la Sexta - 604","peso":9545,"swa":80.82,"sev":"MEDIA"},{"name":"Cruz Verde, Calle 67 - 750","peso":9901,"swa":80.96,"sev":"MEDIA"},{"name":"Cruz Verde, Subazar - 802","peso":10092,"swa":81.02,"sev":"MEDIA"},{"name":"Cruz Verde, San Agustin - 24","peso":6128,"swa":81.09,"sev":"MEDIA"},{"name":"Cruz Verde, Modelia - 407","peso":5368,"swa":81.09,"sev":"MEDIA"},{"name":"Cruz Verde, Metro San Cayetano - 261","peso":4824,"swa":81.16,"sev":"MEDIA"},{"name":"Cruz Verde, Las Velas - 305","peso":12784,"swa":81.19,"sev":"MEDIA"},{"name":"Cruz Verde, Oviedo - 513","peso":7469,"swa":81.2,"sev":"MEDIA"},{"name":"Cruz Verde, Las Villas - 396","peso":6281,"swa":81.25,"sev":"MEDIA"},{"name":"Cruz Verde, Avenida Chile - 590","peso":9841,"swa":81.25,"sev":"MEDIA"},{"name":"Cruz Verde, Alamedas del Sinú - 820","peso":13015,"swa":81.57,"sev":"MEDIA"},{"name":"Cruz Verde, Torre Central - 528","peso":6277,"swa":81.63,"sev":"MEDIA"},{"name":"Cruz Verde, Boca grande Carrera 3 - 456","peso":8511,"swa":81.65,"sev":"MEDIA"},{"name":"Cruz Verde, Edificio Koré - 873","peso":9150,"swa":81.74,"sev":"MEDIA"},{"name":"Cruz Verde, La Carolina - 581","peso":9383,"swa":82.05,"sev":"MEDIA"},{"name":"Cruz Verde, Tunja Calle 19 - 1029","peso":8189,"swa":82.12,"sev":"MEDIA"},{"name":"Cruz Verde, San Joaquín - 998","peso":7001,"swa":82.17,"sev":"MEDIA"},{"name":"Cruz Verde, Mercamas - 79","peso":5410,"swa":82.26,"sev":"MEDIA"},{"name":"Cruz Verde, Centro Empresarial La Colina - 695","peso":9703,"swa":82.37,"sev":"MEDIA"},{"name":"Cruz Verde, Metro Riohacha - 132","peso":4288,"swa":82.37,"sev":"MEDIA"},{"name":"Cruz Verde, Calle 66 a Palermo - 92","peso":9592,"swa":82.37,"sev":"MEDIA"},{"name":"Cruz Verde, Plaza Del Este - 1363","peso":3558,"swa":82.46,"sev":"MEDIA"},{"name":"Cruz Verde, Calle 140-2 - 395","peso":12364,"swa":82.49,"sev":"MEDIA"},{"name":"Cruz Verde, Mall Palma Grande - 571","peso":8320,"swa":82.52,"sev":"MEDIA"},{"name":"Cruz Verde, Crespo - 943","peso":8177,"swa":82.55,"sev":"MEDIA"},{"name":"Cruz Verde, Plaza Mayor - 679","peso":5626,"swa":82.6,"sev":"MEDIA"},{"name":"Cruz Verde, Unicentro Villavicencio - 869","peso":6202,"swa":82.6,"sev":"MEDIA"},{"name":"Cruz Verde, Clínica del Café - 445","peso":5255,"swa":82.63,"sev":"MEDIA"},{"name":"Cruz Verde, Parque 93 - 661","peso":12089,"swa":82.67,"sev":"MEDIA"},{"name":"Cruz Verde, Montearroyo - 548","peso":11086,"swa":82.67,"sev":"MEDIA"},{"name":"Cruz Verde, CC Centro 93 - 1250","peso":1232,"swa":82.71,"sev":"MEDIA"},{"name":"Cruz Verde, Prime Tower - 1028","peso":4454,"swa":82.78,"sev":"MEDIA"},{"name":"Cruz Verde, Torre Li Pinares - 207","peso":3372,"swa":82.86,"sev":"MEDIA"},{"name":"Cruz Verde, Mall La Frontera - 997","peso":7285,"swa":82.94,"sev":"MEDIA"},{"name":"Cruz Verde, Boulevar Calle 10 - 880","peso":31603,"swa":83.04,"sev":"MEDIA"},{"name":"Cruz Verde, Laureles - 63","peso":7487,"swa":83.06,"sev":"MEDIA"},{"name":"Cruz Verde, Visión Vivir - 550","peso":6969,"swa":83.1,"sev":"MEDIA"},{"name":"Cruz Verde, Cerritos - 210","peso":4320,"swa":83.22,"sev":"MEDIA"},{"name":"Cruz Verde, Centro Comercial La Central - 867","peso":6829,"swa":83.22,"sev":"MEDIA"},{"name":"Cruz Verde, Casa Zarama - 994","peso":2227,"swa":83.3,"sev":"MEDIA"},{"name":"Cruz Verde, Parque del Reloj - 1037","peso":3170,"swa":83.31,"sev":"MEDIA"},{"name":"Cruz Verde, Puente Largo - 414","peso":4079,"swa":83.38,"sev":"MEDIA"},{"name":"Cruz Verde, Calle 169B - 857","peso":3907,"swa":83.49,"sev":"MEDIA"},{"name":"Cruz verde, calle 22 santa marta - 1494","peso":10205,"swa":83.56,"sev":"MEDIA"},{"name":"Cruz Verde, Parque Itagüí Calle 51 - 295","peso":7481,"swa":83.69,"sev":"MEDIA"},{"name":"Cruz verde, Villa del Prado (Antes Acuña) - 392","peso":9408,"swa":83.71,"sev":"MEDIA"},{"name":"Cruz Verde, CC arrecife - 1254","peso":5138,"swa":83.73,"sev":"MEDIA"},{"name":"Cruz verde, mall plaza 77 - 1149","peso":6189,"swa":83.83,"sev":"MEDIA"},{"name":"Cruz Verde, Metro Banderas - 253","peso":9907,"swa":83.91,"sev":"MEDIA"},{"name":"Cruz Verde, Chapinero - 409","peso":4025,"swa":84.05,"sev":"MEDIA"},{"name":"Cruz Verde, Jumbo Girardot - 249","peso":2931,"swa":84.17,"sev":"MEDIA"},{"name":"Cruz verde, la rivieré - 1072","peso":3046,"swa":84.18,"sev":"MEDIA"},{"name":"Cruz Verde, Las Granjas - 95","peso":4795,"swa":84.21,"sev":"MEDIA"},{"name":"Cruz Verde, La Nevada - 1214","peso":6388,"swa":84.22,"sev":"MEDIA"},{"name":"Cruz Verde, Centum Calle 100 - 685","peso":6302,"swa":84.29,"sev":"MEDIA"},{"name":"Cruz Verde, El Jardin - 96","peso":3769,"swa":84.32,"sev":"MEDIA"},{"name":"Cruz Verde, Comfamiliar - 205","peso":7133,"swa":84.34,"sev":"MEDIA"},{"name":"Cruz Verde, San Pio - 1069","peso":11586,"swa":84.36,"sev":"MEDIA"},{"name":"Cruz Verde, Cartago Centro - 1113","peso":1395,"swa":84.44,"sev":"MEDIA"},{"name":"Cruz Verde, Viva Sincelejo - 1014","peso":5057,"swa":84.56,"sev":"MEDIA"},{"name":"Cruz Verde, Casa Vieja - 1144","peso":5110,"swa":84.6,"sev":"MEDIA"},{"name":"Cruz Verde, Quintas de Don Simon - 646","peso":14301,"swa":84.61,"sev":"MEDIA"},{"name":"Cruz Verde, Country Urgencias - 519","peso":23896,"swa":84.8,"sev":"MEDIA"},{"name":"Cruz Verde, Torre Colpatria - 818","peso":6413,"swa":84.86,"sev":"MEDIA"},{"name":"Cruz Verde, Calle 7 Chía - 1086","peso":15507,"swa":84.94,"sev":"MEDIA"},{"name":"Cruz Verde, Point 156 - 870","peso":6269,"swa":84.96,"sev":"MEDIA"},{"name":"Cruz Verde, Distrito 90 - 1047","peso":16830,"swa":85.01,"sev":"BAJA"},{"name":"Cruz Verde, Domicilios Barranquilla - 885","peso":31186,"swa":85.1,"sev":"BAJA"},{"name":"Cruz Verde, Viva Fontibón - 768","peso":5709,"swa":85.11,"sev":"BAJA"},{"name":"Cruz Verde, Cañaveral Bucaramanga - 896","peso":10374,"swa":85.23,"sev":"BAJA"},{"name":"Cruz Verde, Santa Fé de Varsovia - 1175","peso":6407,"swa":85.23,"sev":"BAJA"},{"name":"Cruz Verde, Paseo Castellana - 221","peso":4706,"swa":85.36,"sev":"BAJA"},{"name":"Cruz Verde, Mall Reserva plaza - 861","peso":4675,"swa":85.48,"sev":"BAJA"},{"name":"Cruz Verde, Ibague Calle 10 - 314","peso":5649,"swa":85.61,"sev":"BAJA"},{"name":"Cruz Verde, Ciudad Emp - 542","peso":10492,"swa":85.69,"sev":"BAJA"},{"name":"Cruz Verde, El Eden - 667","peso":5510,"swa":85.86,"sev":"BAJA"},{"name":"Cruz Verde, Bochalema Plaza - 1041","peso":15742,"swa":85.87,"sev":"BAJA"},{"name":"Cruz Verde, Vipasa - 67","peso":15141,"swa":85.88,"sev":"BAJA"},{"name":"Cruz Verde, Bosques de Alsacia - 965","peso":7463,"swa":85.89,"sev":"BAJA"},{"name":"Cruz Verde, CC Santa Lucia Plaza - 617","peso":2217,"swa":85.93,"sev":"BAJA"},{"name":"Cruz verde, marinilla parque - 1275","peso":604,"swa":86.09,"sev":"BAJA"},{"name":"Cruz Verde, Los Almendros - 1121","peso":21811,"swa":86.14,"sev":"BAJA"},{"name":"Cruz Verde, Calle 27 - 798","peso":7685,"swa":86.21,"sev":"BAJA"},{"name":"Cruz Verde, City Center - 1212","peso":10186,"swa":86.22,"sev":"BAJA"},{"name":"Cruz Verde, Mercurio - 945","peso":5163,"swa":86.25,"sev":"BAJA"},{"name":"Cruz Verde, Niza\n(Antes Acuña) - 393","peso":10739,"swa":86.27,"sev":"BAJA"},{"name":"Cruz Verde, Floresta - 181","peso":14247,"swa":86.3,"sev":"BAJA"},{"name":"Cruz Verde, Premium Av. estudiantes - 1091","peso":4096,"swa":86.33,"sev":"BAJA"},{"name":"Cruz Verde, Calle 184 - 502","peso":6771,"swa":86.35,"sev":"BAJA"},{"name":"Cruz Verde, Envigado Parque Cra 43 - 1190","peso":7487,"swa":86.42,"sev":"BAJA"},{"name":"Cruz Verde, Santa Matilde - 406","peso":17995,"swa":86.5,"sev":"BAJA"},{"name":"Cruz Verde, Montearroyo 2 - 549","peso":23749,"swa":86.5,"sev":"BAJA"},{"name":"Cruz Verde, Calle 16 Ingenio - 69","peso":10199,"swa":86.55,"sev":"BAJA"},{"name":"Cruz Verde, Cenctro Palmira - 1245","peso":4232,"swa":86.58,"sev":"BAJA"},{"name":"Cruz Verde, Prado 72 - 562","peso":16331,"swa":86.68,"sev":"BAJA"},{"name":"Cruz Verde, Unicentro Pereira - 842","peso":5215,"swa":86.73,"sev":"BAJA"},{"name":"Cruz Verde, Acuarela del Parque - 863","peso":19883,"swa":86.8,"sev":"BAJA"},{"name":"Cruz Verde, Jumbo Yopal - 895","peso":2610,"swa":86.93,"sev":"BAJA"},{"name":"Cruz verde, avenida el palo  - 589","peso":8844,"swa":87.02,"sev":"BAJA"},{"name":"Cruz Verde, Quiriguá - 641","peso":10351,"swa":87.17,"sev":"BAJA"},{"name":"Cruz Verde, Torreon Empresarial - 1011","peso":10304,"swa":87.27,"sev":"BAJA"},{"name":"Cruz Verde, Puerta del Norte - 819","peso":5024,"swa":87.4,"sev":"BAJA"},{"name":"Cruz Verde, Ecoplaza - 876","peso":6034,"swa":87.64,"sev":"BAJA"},{"name":"Cruz Verde, Unico Yumbo - 850","peso":3094,"swa":87.72,"sev":"BAJA"},{"name":"Cruz Verde, Villa Santos - 977","peso":41252,"swa":87.8,"sev":"BAJA"},{"name":"Cruz Verde, Boulevard 70 - 616","peso":52935,"swa":87.84,"sev":"BAJA"},{"name":"Cruz Verde, Lago - 212","peso":4134,"swa":88.0,"sev":"BAJA"},{"name":"Cruz Verde, Carrera 6A Centro - 140","peso":1728,"swa":88.02,"sev":"BAJA"},{"name":"Cruz Verde, Domicilios Alcazares - 381","peso":26801,"swa":88.03,"sev":"BAJA"},{"name":"Cruz Verde, Calle 127 - 168","peso":23463,"swa":88.22,"sev":"BAJA"},{"name":"Cruz Verde, Avenida Del Rio Normandia - 68","peso":5927,"swa":88.27,"sev":"BAJA"},{"name":"Cruz Verde, Plaza Fabricato - 754","peso":15808,"swa":88.41,"sev":"BAJA"},{"name":"Cruz Verde, Portoalegre - 545","peso":41394,"swa":88.78,"sev":"BAJA"},{"name":"Cruz Verde Mall Indiana, 656","peso":1806,"swa":88.82,"sev":"BAJA"},{"name":"Cruz Verde, Giron - 644","peso":2595,"swa":88.86,"sev":"BAJA"},{"name":"Cruz Verde, La Estrella - 958","peso":12004,"swa":89.28,"sev":"BAJA"},{"name":"Cruz Verde, Jumbo Calle 80 - 248","peso":9509,"swa":89.32,"sev":"BAJA"},{"name":"Cruz Verde, Transveral 9 Popayan - 1218","peso":6621,"swa":89.5,"sev":"BAJA"},{"name":"Cruz Verde, Cúcuta Avenida Cero - 510","peso":5450,"swa":90.2,"sev":"BAJA"},{"name":"Cruz Verde, Duitama Carrera 16 - 1135","peso":1396,"swa":90.33,"sev":"BAJA"},{"name":"Cruz Verde, Calle 84 Metropolis","peso":1726,"swa":91.25,"sev":"BAJA"},{"name":"Cruz Verde, Plazuela Castilla - 276","peso":1444,"swa":91.9,"sev":"BAJA"},{"name":"Cruz Verde, Alameda del Rio - 1623","peso":469,"swa":92.54,"sev":"BAJA"},{"name":"Cruz Verde, Madrid Calle 7 - 1010","peso":3285,"swa":92.6,"sev":"BAJA"},{"name":"Cruz Verde, Sogamoso - 142","peso":864,"swa":95.83,"sev":"BAJA"}],"products":[{"name":"Becton Dickinson Jeringa Para Insulina Ultra-Fine","swa":31.9,"peso":13146},{"name":"Postday Levonorgestrel (1.5 mg)","swa":0.0,"peso":581},{"name":"Coca-Cola Gaseosa Original 400 mL","swa":11.1,"peso":162},{"name":"Noxpirin Plus Antigripal Día Noche","swa":49.0,"peso":145},{"name":"Unitest Prueba de Embarazo Tipo Lapicero RDV1002","swa":26.4,"peso":129},{"name":"Dolorsin blister Fem (400 mg / 20 mg)","swa":0.0,"peso":114},{"name":"Durex Preservativo Extra Seguro","swa":34.3,"peso":70},{"name":"Suero Rehidratante Pedialyte Max 60 Uva Frasco 500 mL","swa":33.3,"peso":54},{"name":"Mieltertos Caramelo Sabor a Mentholyplus Sobre (168 g)","swa":33.3,"peso":48},{"name":"Prueba de Embarazo Clearblue Detección Rápida 1 Prueba","swa":0.0,"peso":44},{"name":"Gaviscon Antiácido Doble Acción Suspensión Oral Sobre","swa":33.3,"peso":30},{"name":"American Generics Clotrimazol Crema Tópica (1 %)","swa":33.3,"peso":30},{"name":"American Generics Metoclopramida (10 mg)","swa":33.3,"peso":30},{"name":"Diosmit (3 g) Nti","swa":14.3,"peso":28},{"name":"Termometro Digital Alfa Safe Trading","swa":33.3,"peso":27},{"name":"Suero Rehidratante Pedialyte Max 60 Fresa Frasco 500 mL","swa":0.0,"peso":24},{"name":"Topamac (25 mg)","swa":33.3,"peso":24},{"name":"Suero Rehidratante Pedialyte Max 60 Coco Frasco 500 mL","swa":33.3,"peso":24},{"name":"Fórmula Infantil Enfamil Premium Promental 0-12M 375 g","swa":33.3,"peso":24},{"name":"Complemento Nutricional Pediasure Peptigro Vainilla Líquido","swa":0.0,"peso":24},{"name":"Multi Solution 1 Solución Isotónica Estéril","swa":45.5,"peso":22},{"name":"Acetaminofen Forte Acetaminofen/cafeina 500/65 Mg","swa":14.3,"peso":21},{"name":"Enterogermina (2 Millardos)","swa":14.3,"peso":21},{"name":"Efexor Xr (150mg) Cápsulas x 30","swa":20.0,"peso":20},{"name":"Becton Dickinson Jeringa Desechable Discardit  20 mL","swa":20.0,"peso":20},{"name":"Alfa Safe Jeringa Hipodérmica Desechable x20ml","swa":20.0,"peso":20},{"name":"Brisa Agua Saborizada Con Gas Manzana 600 mL","swa":33.3,"peso":18},{"name":"Doloff 7.5/325Mg X 10 Tabletas","swa":33.3,"peso":18},{"name":"Neboret Jarabe (0.08 %)","swa":33.3,"peso":18},{"name":"Noxpirin Plus Caja X 12 Capsulas","swa":33.3,"peso":18},{"name":"K-Trix Farpag Enjuague Bucal de Caléndula","swa":25.0,"peso":16},{"name":"Quetiapina Mk Tabletas","swa":25.0,"peso":16},{"name":"Postday Tableta (0.75mg)","swa":46.7,"peso":15},{"name":"Natural Freshly Propomielito Miel de Abejas Jengibre","swa":20.0,"peso":15},{"name":"Tena Pañal Slip Comfort Medium","swa":46.7,"peso":15},{"name":"Gillette Máquina de Afeitar Prestobarba 2 UltraGrip","swa":0.0,"peso":12},{"name":"Mk Fluoxetina (20 mg)","swa":33.3,"peso":12},{"name":"Mk Amoxicilina Blíster (500mg)","swa":33.3,"peso":12},{"name":"Ensure Advance Vainilla Con Proteína + Hmb Líquido Caja x 6 Und","swa":33.3,"peso":12},{"name":"Mk Metronidazol Blister","swa":33.3,"peso":12},{"name":"Durex Condones Sensitivo Invisible","swa":0.0,"peso":12},{"name":"MK Azitromicina Niños Sabor Vainilla (200 mg/5 mL)","swa":0.0,"peso":12},{"name":"Mk Salbutamol Suspensión para Inhalación (100 mcg)","swa":0.0,"peso":12},{"name":"Medicbrand Dermaskin Crema (1 % / 0.5 % / 0.04 %)","swa":45.5,"peso":11},{"name":"Omeprazol Mk (20 mg)","swa":18.2,"peso":11},{"name":"Healthy América Suplemento Dietario Zinc (40 mg) 100 Tabletas","swa":0.0,"peso":10},{"name":"Pro Familia Prueba de Embarazo Profamilia","swa":20.0,"peso":10},{"name":"Colmed Clotrimazol Óvulos (100 mg) 10 Cápsulas","swa":30.0,"peso":10},{"name":"Pax Día Polvo Granulado con Sabor a Naranja","swa":33.3,"peso":9},{"name":"Vick Drops Pastillas sabor Jengibre","swa":33.3,"peso":9}]};
 
-const D = {"caidas": [{"l2": "Depilación y afeitado", "l1": "Farmacia", "swa_ant": 67.83, "swa_act": 46.79, "delta": -21.04, "atc": 88.0, "peso": 265.0, "severidad": "CRÍTICA", "trend": "▼"}, {"l2": "Protección femenina", "l1": "Cuidado personal", "swa_ant": 88.89, "swa_act": 77.41, "delta": -11.48, "atc": 648.0, "peso": 1943.0, "severidad": "CRÍTICA", "trend": "▼"}, {"l2": "Higiene y cuidado", "l1": "Cuidado personal", "swa_ant": 87.19, "swa_act": 77.39, "delta": -9.8, "atc": 289.0, "peso": 867.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Salud visual", "l1": "Farmacia", "swa_ant": 87.38, "swa_act": 77.82, "delta": -9.56, "atc": 733.0, "peso": 2200.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Cuidado oral", "l1": "Farmacia", "swa_ant": 87.78, "swa_act": 79.9, "delta": -7.88, "atc": 915.0, "peso": 2746.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Cuidado dermatológico", "l1": "Farmacia", "swa_ant": 86.24, "swa_act": 80.0, "delta": -6.24, "atc": 1700.0, "peso": 5100.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Desodorantes", "l1": "Cuidado personal", "swa_ant": 78.41, "swa_act": 72.53, "delta": -5.88, "atc": 360.0, "peso": 1081.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Otros medicamentos", "l1": "Farmacia", "swa_ant": 83.28, "swa_act": 78.03, "delta": -5.24, "atc": 3382.0, "peso": 10147.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Alergias", "l1": "Farmacia", "swa_ant": 86.72, "swa_act": 81.91, "delta": -4.81, "atc": 958.0, "peso": 2874.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Medicamentos para la Diabetes", "l1": "Farmacia", "swa_ant": 91.52, "swa_act": 87.62, "delta": -3.89, "atc": 407.0, "peso": 1220.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Gripa y tos", "l1": "Farmacia", "swa_ant": 92.93, "swa_act": 89.11, "delta": -3.82, "atc": 4893.0, "peso": 14678.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Cuidado facial", "l1": "Cuidado personal", "swa_ant": 87.34, "swa_act": 84.01, "delta": -3.34, "atc": 727.0, "peso": 2182.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Salud sexual", "l1": "Farmacia", "swa_ant": 89.3, "swa_act": 86.5, "delta": -2.8, "atc": 3969.0, "peso": 11908.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Productos naturales", "l1": "Farmacia", "swa_ant": 84.44, "swa_act": 81.77, "delta": -2.66, "atc": 349.0, "peso": 1048.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Cuidado corporal", "l1": "Cuidado personal", "swa_ant": 80.58, "swa_act": 78.16, "delta": -2.43, "atc": 496.0, "peso": 1488.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Salud digestiva", "l1": "Farmacia", "swa_ant": 91.55, "swa_act": 89.16, "delta": -2.39, "atc": 5898.0, "peso": 17695.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Fórmulas y alimentos", "l1": "Cuidado del bebé", "swa_ant": 84.75, "swa_act": 82.9, "delta": -1.85, "atc": 719.0, "peso": 2158.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Salud nutricional", "l1": "Farmacia", "swa_ant": 88.47, "swa_act": 86.71, "delta": -1.76, "atc": 2170.0, "peso": 6510.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Protección incontinencia", "l1": "Farmacia", "swa_ant": 70.38, "swa_act": 69.06, "delta": -1.32, "atc": 167.0, "peso": 501.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Alivio del dolor", "l1": "Farmacia", "swa_ant": 86.61, "swa_act": 85.76, "delta": -0.85, "atc": 3827.0, "peso": 11482.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Equipo y material médico", "l1": "Farmacia", "swa_ant": 80.88, "swa_act": 80.29, "delta": -0.59, "atc": 482.0, "peso": 1446.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Botiquín y primeros auxilios", "l1": "Farmacia", "swa_ant": 82.83, "swa_act": 82.34, "delta": -0.5, "atc": 1570.0, "peso": 4710.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Cuidado del cabello", "l1": "Cuidado personal", "swa_ant": 83.44, "swa_act": 83.06, "delta": -0.38, "atc": 403.0, "peso": 1210.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Fragancias", "l1": "Cuidado personal", "swa_ant": 100.0, "swa_act": 100.0, "delta": 0.0, "atc": 1.0, "peso": 2.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Lactancia y accesorios", "l1": "Cuidado del bebé", "swa_ant": 100.0, "swa_act": 100.0, "delta": 0.0, "atc": 1.0, "peso": 3.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Accesorios de belleza", "l1": "Cuidado personal", "swa_ant": 80.14, "swa_act": 82.28, "delta": 2.14, "atc": 53.0, "peso": 158.0, "severidad": "BAJA", "trend": "▲"}, {"l2": "Pañales y toallitas", "l1": "Cuidado del bebé", "swa_ant": 83.29, "swa_act": 85.93, "delta": 2.64, "atc": 334.0, "peso": 1002.0, "severidad": "BAJA", "trend": "▲"}, {"l2": "Cuidado de los pies", "l1": "Farmacia", "swa_ant": 78.22, "swa_act": 81.75, "delta": 3.53, "atc": 42.0, "peso": 126.0, "severidad": "BAJA", "trend": "▲"}, {"l2": "Mundo COVID", "l1": "Farmacia", "swa_ant": 71.43, "swa_act": 100.0, "delta": 28.57, "atc": 1.0, "peso": 2.0, "severidad": "BAJA", "trend": "▲"}], "trend": {"labels": ["04/05", "05/05", "06/05", "07/05", "08/05", "09/05", "10/05", "11/05", "12/05", "13/05", "14/05", "15/05", "16/05", "17/05", "18/05", "19/05", "20/05", "21/05"], "teorico": [81.7, 84.1, 86.8, 90.6, 75.9, 84.8, 86.1, 86.9, 87.9, 88.0, 91.3, 91.6, 90.3, 90.5, 83.9, 78.3, 84.1, 81.9], "real": [81.0, 84.1, 86.2, null, null, null, 84.8, 85.2, 85.7, 85.4, 88.0, 88.5, 90.3, 87.7, 87.9, null, 81.9, 80.0]}, "l1": [{"cat": "Farmacia", "swa_ant": 88.25, "swa_act": 85.25, "delta": -3.0, "sev": "MEDIA"}, {"cat": "Cuidado personal", "swa_ant": 84.99, "swa_act": 78.94, "delta": -6.05, "sev": "ALTA"}, {"cat": "Cuidado del bebé", "swa_ant": 84.93, "swa_act": 82.48, "delta": -2.45, "sev": "MEDIA"}], "semana": "18/05/2026", "aliado": "Cruz Verde MT"};
-let currentFilter = 'TODAS';
+let filterL2 = 'TODAS';
+let filterStore = 'TODAS';
 let chartTrend, chartL1, chartCaidas;
 
-function badge(sev) {
-  const m = {'CRÍTICA':'critica','ALTA':'alta','MEDIA':'media','BAJA':'baja'};
+function badge(sev){
+  const m={'CRÍTICA':'critica','ALTA':'alta','MEDIA':'media','BAJA':'baja'};
   return `<span class="badge b-${m[sev]||'baja'}">${sev}</span>`;
 }
-function dc(v) { return v<0?'delta-neg':v>0?'delta-pos':'delta-neu'; }
-function tIcon(t) {
+function dc(v){return v<0?'delta-neg':v>0?'delta-pos':'delta-neu';}
+function tIcon(t){
   if(t==='▼') return '<span class="trend-dn">▼</span>';
   if(t==='▲') return '<span class="trend-up">▲</span>';
   return '<span class="trend-fl">→</span>';
 }
-
-function renderKPIs() {
-  const crit = D.caidas.filter(r=>r.severidad==='CRÍTICA').length;
-  const alta = D.caidas.filter(r=>r.severidad==='ALTA').length;
-  const med  = D.caidas.filter(r=>r.severidad==='MEDIA').length;
-  document.getElementById('kpiStrip').innerHTML = `
-    <div class="kpi"><div class="kpi-label">SWA Total</div><div class="kpi-val">84.49%</div><div class="kpi-sub">sem. 18/05/2026</div></div>
-    <div class="kpi"><div class="kpi-label">∆ vs sem. ant.</div><div class="kpi-val neg">-3.32 pp</div><div class="kpi-sub">vs 11/05/2026</div></div>
-    <div class="kpi"><div class="kpi-label">Críticas</div><div class="kpi-val neg">${crit}</div><div class="kpi-sub">categorías L2</div></div>
-    <div class="kpi"><div class="kpi-label">Altas</div><div class="kpi-val warn">${alta}</div><div class="kpi-sub">categorías L2</div></div>
-    <div class="kpi"><div class="kpi-label">Medias</div><div class="kpi-val info">${med}</div><div class="kpi-sub">categorías L2</div></div>`;
+function swaColor(s){
+  if(s<75) return '#FF441B';
+  if(s<80) return '#FF6B35';
+  if(s<85) return '#FFC107';
+  return '#27ae60';
 }
 
-function renderTrendChart() {
+function renderKPIs(){
+  const crit=D.caidas.filter(r=>r.severidad==='CRÍTICA').length;
+  const alta=D.caidas.filter(r=>r.severidad==='ALTA').length;
+  const med=D.caidas.filter(r=>r.severidad==='MEDIA').length;
+  const storeCrit=D.stores.filter(s=>s.sev==='CRÍTICA').length;
+  document.getElementById('kpiStrip').innerHTML=`
+    <div class="kpi"><div class="kpi-label">SWA Total</div><div class="kpi-val">84.49%</div><div class="kpi-sub">sem. 18/05/2026</div></div>
+    <div class="kpi"><div class="kpi-label">∆ vs sem. ant.</div><div class="kpi-val neg">-3.32 pp</div><div class="kpi-sub">vs 11/05/2026</div></div>
+    <div class="kpi"><div class="kpi-label">Cat. críticas</div><div class="kpi-val neg">${crit}</div><div class="kpi-sub">L2 categorías</div></div>
+    <div class="kpi"><div class="kpi-label">Cat. altas</div><div class="kpi-val warn">${alta}</div><div class="kpi-sub">L2 categorías</div></div>
+    <div class="kpi"><div class="kpi-label">Tiendas críticas</div><div class="kpi-val neg">${storeCrit}</div><div class="kpi-sub">de 158 tiendas</div></div>`;
+}
+
+function renderTrendChart(){
   if(chartTrend) chartTrend.destroy();
-  chartTrend = new Chart(document.getElementById('chartTrend'), {
+  chartTrend=new Chart(document.getElementById('chartTrend'),{
     type:'line',
-    data:{
-      labels: D.trend.labels,
-      datasets:[
-        {label:'Teórico',data:D.trend.teorico,borderColor:'#85C1E9',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#85C1E9',tension:0.35,fill:false,spanGaps:true},
-        {label:'Real CP',data:D.trend.real,borderColor:'#1A3A5C',borderWidth:2,borderDash:[6,3],pointRadius:3,pointBackgroundColor:'#1A3A5C',tension:0.35,fill:false,spanGaps:false}
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
+    data:{labels:D.trend.labels,datasets:[
+      {label:'Teórico',data:D.trend.teorico,borderColor:'#85C1E9',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#85C1E9',tension:0.35,fill:false,spanGaps:true},
+      {label:'Real CP',data:D.trend.real,borderColor:'#1A3A5C',borderWidth:2,borderDash:[6,3],pointRadius:3,pointBackgroundColor:'#1A3A5C',tension:0.35,fill:false,spanGaps:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}},
       scales:{
         y:{min:74,max:94,ticks:{callback:v=>v+'%',font:{size:11,family:'DM Mono'}},grid:{color:'#EDE8E0'}},
         x:{ticks:{font:{size:10},maxRotation:45,autoSkip:false}}
-      }
-    }
+      }}
   });
 }
 
-function renderL1Chart() {
+function renderL1Chart(){
   if(chartL1) chartL1.destroy();
-  chartL1 = new Chart(document.getElementById('chartL1'), {
+  chartL1=new Chart(document.getElementById('chartL1'),{
     type:'bar',
-    data:{
-      labels: D.l1.map(r=>r.cat),
-      datasets:[
-        {label:'Sem. ant.',data:D.l1.map(r=>r.swa_ant),backgroundColor:'#B5D4F4',borderRadius:4},
-        {label:'Sem. act.',data:D.l1.map(r=>r.swa_act),backgroundColor:'#FF441B',borderRadius:4}
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
+    data:{labels:D.l1.map(r=>r.cat),datasets:[
+      {label:'Sem. ant.',data:D.l1.map(r=>r.swa_ant),backgroundColor:'#B5D4F4',borderRadius:4},
+      {label:'Sem. act.',data:D.l1.map(r=>r.swa_act),backgroundColor:'#FF441B',borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}},
       scales:{
         y:{min:75,max:92,ticks:{callback:v=>v+'%',font:{size:11,family:'DM Mono'}},grid:{color:'#EDE8E0'}},
         x:{ticks:{font:{size:10}}}
-      }
-    }
+      }}
   });
 }
 
-function renderCaidasChart() {
+function renderCaidasChart(){
   if(chartCaidas) chartCaidas.destroy();
-  const top = [...D.caidas].filter(r=>r.delta<0).sort((a,b)=>a.delta-b.delta).slice(0,10);
-  const h = top.length*40+60;
-  document.getElementById('caidasWrap').style.height = h+'px';
-  const colors = top.map(r=>r.severidad==='CRÍTICA'?'#FF441B':r.severidad==='ALTA'?'#FF6B35':r.severidad==='MEDIA'?'#85C1E9':'#B5D4F4');
-  chartCaidas = new Chart(document.getElementById('chartCaidas'), {
+  const top=[...D.caidas].filter(r=>r.delta<0).sort((a,b)=>a.delta-b.delta).slice(0,10);
+  document.getElementById('caidasWrap').style.height=(top.length*40+60)+'px';
+  chartCaidas=new Chart(document.getElementById('chartCaidas'),{
     type:'bar',
-    data:{
-      labels:top.map(r=>r.l2),
-      datasets:[{label:'∆ pp',data:top.map(r=>+r.delta.toFixed(2)),backgroundColor:colors,borderRadius:4}]
-    },
-    options:{
-      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    data:{labels:top.map(r=>r.l2),datasets:[{label:'∆ pp',data:top.map(r=>+r.delta.toFixed(2)),
+      backgroundColor:top.map(r=>r.severidad==='CRÍTICA'?'#FF441B':r.severidad==='ALTA'?'#FF6B35':r.severidad==='MEDIA'?'#85C1E9':'#B5D4F4'),borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'∆ '+ctx.parsed.x.toFixed(2)+' pp'}}},
-      scales:{
-        x:{ticks:{callback:v=>v+' pp',font:{size:11,family:'DM Mono'}},grid:{color:'#EDE8E0'}},
-        y:{ticks:{font:{size:11}}}
-      }
-    }
+      scales:{x:{ticks:{callback:v=>v+' pp',font:{size:11,family:'DM Mono'}},grid:{color:'#EDE8E0'}},y:{ticks:{font:{size:11}}}}}
   });
 }
 
-function renderL1Table() {
-  document.getElementById('l1Table').innerHTML = D.l1.map(r=>`
-    <tr>
-      <td>${r.cat}</td>
-      <td class="num">${r.swa_ant.toFixed(2)}%</td>
-      <td class="num">${r.swa_act.toFixed(2)}%</td>
-      <td class="num ${dc(r.delta)}">${r.delta>0?'+':''}${r.delta.toFixed(2)}</td>
-      <td>${badge(r.sev)}</td>
-    </tr>`).join('');
+function renderL1Table(){
+  document.getElementById('l1Table').innerHTML=D.l1.map(r=>`
+    <tr><td>${r.cat}</td><td class="num">${r.swa_ant.toFixed(2)}%</td><td class="num">${r.swa_act.toFixed(2)}%</td>
+    <td class="num ${dc(r.delta)}">${r.delta>0?'+':''}${r.delta.toFixed(2)}</td><td>${badge(r.sev)}</td></tr>`).join('');
 }
 
-function filterTable(sev, btn) {
-  currentFilter = sev;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+function filterTable(sev,btn){
+  filterL2=sev;
+  document.querySelectorAll('#mainTable').forEach(()=>{});
+  btn.closest('.filter-bar').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderMainTable();
 }
 
-function renderMainTable() {
-  const rows = currentFilter==='TODAS' ? D.caidas : D.caidas.filter(r=>r.severidad===currentFilter);
-  document.getElementById('mainTable').innerHTML = rows.map(r=>`
-    <tr>
-      <td><strong>${r.l2}</strong></td>
-      <td style="color:var(--light);font-size:12px">${r.l1}</td>
-      <td class="num">${r.swa_ant.toFixed(2)}%</td>
-      <td class="num">${r.swa_act.toFixed(2)}%</td>
-      <td class="num ${dc(r.delta)}">${r.delta>0?'+':''}${r.delta.toFixed(2)}</td>
-      <td class="num">${r.atc}</td>
-      <td class="num">${r.peso}</td>
-      <td>${tIcon(r.trend)}</td>
-      <td>${badge(r.severidad)}</td>
-    </tr>`).join('');
+function renderMainTable(){
+  const rows=filterL2==='TODAS'?D.caidas:D.caidas.filter(r=>r.severidad===filterL2);
+  document.getElementById('mainTable').innerHTML=rows.map(r=>`
+    <tr><td><strong>${r.l2}</strong></td><td style="color:var(--light);font-size:12px">${r.l1}</td>
+    <td class="num">${r.swa_ant.toFixed(2)}%</td><td class="num">${r.swa_act.toFixed(2)}%</td>
+    <td class="num ${dc(r.delta)}">${r.delta>0?'+':''}${r.delta.toFixed(2)}</td>
+    <td class="num">${r.atc}</td><td class="num">${r.peso}</td>
+    <td>${tIcon(r.trend)}</td><td>${badge(r.severidad)}</td></tr>`).join('');
+}
+
+function renderTopStores(){
+  const sorted=[...D.stores].sort((a,b)=>a.swa-b.swa);
+  const worst=sorted.slice(0,10);
+  const best=sorted.slice(-10).reverse();
+  document.getElementById('worstStores').innerHTML=worst.map(s=>`
+    <tr><td style="font-size:12px">${s.name.replace('Cruz Verde, ','')}</td>
+    <td class="num" style="color:var(--red);font-weight:600">${s.swa.toFixed(1)}%</td>
+    <td class="num">${s.peso.toLocaleString()}</td><td>${badge(s.sev)}</td></tr>`).join('');
+  document.getElementById('bestStores').innerHTML=best.map(s=>`
+    <tr><td style="font-size:12px">${s.name.replace('Cruz Verde, ','')}</td>
+    <td class="num" style="color:#1A7A3C;font-weight:600">${s.swa.toFixed(1)}%</td>
+    <td class="num">${s.peso.toLocaleString()}</td><td>${badge(s.sev)}</td></tr>`).join('');
+}
+
+function filterStores(sev,btn){
+  filterStore=sev;
+  btn.closest('.filter-bar').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStoresTable();
+}
+
+function renderStoresTable(){
+  const q=(document.getElementById('storeSearch').value||'').toLowerCase();
+  let rows=filterStore==='TODAS'?D.stores:D.stores.filter(s=>s.sev===filterStore);
+  if(q) rows=rows.filter(s=>s.name.toLowerCase().includes(q));
+  const sorted=[...rows].sort((a,b)=>a.swa-b.swa);
+  document.getElementById('storesTable').innerHTML=sorted.map((s,i)=>`
+    <tr><td class="num" style="color:var(--light)">${i+1}</td>
+    <td style="font-size:12px">${s.name.replace('Cruz Verde, ','')}</td>
+    <td class="num" style="color:${swaColor(s.swa)};font-weight:600">${s.swa.toFixed(1)}%</td>
+    <td><div class="swa-bar-wrap"><div class="swa-bar"><div class="swa-fill" style="width:${s.swa}%;background:${swaColor(s.swa)}"></div></div></div></td>
+    <td class="num">${s.peso.toLocaleString()}</td>
+    <td>${badge(s.sev)}</td></tr>`).join('');
+}
+
+function renderProducts(){
+  document.getElementById('productsTable').innerHTML=D.products.map((p,i)=>`
+    <tr><td class="num" style="color:var(--light)">${i+1}</td>
+    <td style="font-size:12px">${p.name}</td>
+    <td class="num" style="color:${swaColor(p.swa)};font-weight:600">${p.swa.toFixed(1)}%</td>
+    <td class="num">${p.peso.toLocaleString()}</td></tr>`).join('');
 }
 
 renderKPIs();
@@ -304,6 +371,9 @@ renderL1Chart();
 renderCaidasChart();
 renderL1Table();
 renderMainTable();
+renderTopStores();
+renderStoresTable();
+renderProducts();
 </script>
 </body>
 </html>
