@@ -3,179 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SWA Tracker — Cafam · Rappi CO</title>
+<title>SWA Tracker — Cruz Verde MT · Rappi CO</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root {
-    --red: #FF441B;
-    --orange: #FF6B35;
-    --cream: #FAF3EB;
-    --dark: #1A1A1A;
-    --mid: #555;
-    --light: #888;
-    --border: #E8E2D9;
-    --white: #FFFFFF;
-    --critica-bg: #FFF0ED; --critica-text: #C0300D;
-    --alta-bg: #FFF7E6; --alta-text: #A05C00;
-    --media-bg: #EEF3FF; --media-text: #2B4BB5;
-    --baja-bg: #F0FAF4; --baja-text: #1A7A3C;
+    --red:#FF441B; --orange:#FF6B35; --cream:#FAF3EB;
+    --dark:#1A1A1A; --mid:#555; --light:#888; --border:#E8E2D9;
+    --white:#FFFFFF; --green:#1A3A5C;
+    --critica-bg:#FFF0ED;--critica-text:#C0300D;
+    --alta-bg:#FFF7E6;--alta-text:#A05C00;
+    --media-bg:#EEF3FF;--media-text:#2B4BB5;
+    --baja-bg:#F0FAF4;--baja-text:#1A7A3C;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); font-size: 14px; line-height: 1.5; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);font-size:14px;line-height:1.5;}
 
-  /* TOPBAR */
-  .topbar { background: var(--dark); color: #fff; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; }
-  .topbar-left { display: flex; align-items: center; gap: 1rem; }
-  .rappi-logo { font-size: 18px; font-weight: 600; color: var(--orange); letter-spacing: -0.5px; }
-  .topbar-sep { width: 1px; height: 20px; background: #333; }
-  .topbar-title { font-size: 13px; color: #aaa; font-weight: 400; }
-  .semana-badge { font-family: 'DM Mono', monospace; font-size: 11px; background: #2a2a2a; border: 1px solid #333; color: #ccc; padding: 3px 10px; border-radius: 20px; }
-  .upload-btn { background: var(--red); color: #fff; border: none; padding: 7px 16px; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: opacity .15s; }
-  .upload-btn:hover { opacity: .85; }
-  #fileInput { display: none; }
+  .topbar{background:var(--dark);color:#fff;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;}
+  .rappi-logo{font-size:18px;font-weight:600;color:var(--orange);letter-spacing:-0.5px;}
+  .topbar-sep{width:1px;height:20px;background:#333;}
+  .topbar-title{font-size:13px;color:#aaa;font-weight:400;}
+  .semana-badge{font-family:'DM Mono',monospace;font-size:11px;background:#2a2a2a;border:1px solid #333;color:#ccc;padding:3px 10px;border-radius:20px;}
+  .cv-tag{font-size:11px;font-weight:600;color:#2ecc71;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);padding:3px 10px;border-radius:20px;}
 
-  /* LAYOUT */
-  .container { max-width: 1280px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+  .container{max-width:1280px;margin:0 auto;padding:1.5rem 2rem 3rem;}
 
-  /* KPI STRIP */
-  .kpi-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 1.5rem; }
-  .kpi { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
-  .kpi-label { font-size: 11px; font-weight: 500; color: var(--light); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-  .kpi-val { font-size: 26px; font-weight: 600; color: var(--dark); line-height: 1; }
-  .kpi-val.pos { color: #1A7A3C; }
-  .kpi-val.neg { color: var(--red); }
-  .kpi-sub { font-size: 11px; color: var(--light); margin-top: 4px; }
+  .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:1.5rem;}
+  .kpi{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;}
+  .kpi-label{font-size:11px;font-weight:500;color:var(--light);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+  .kpi-val{font-size:26px;font-weight:600;color:var(--dark);line-height:1;}
+  .kpi-val.neg{color:var(--red);}
+  .kpi-val.warn{color:#A05C00;}
+  .kpi-val.info{color:#2B4BB5;}
+  .kpi-sub{font-size:11px;color:var(--light);margin-top:4px;}
 
-  /* CHARTS ROW */
-  .charts-row { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
-  .card-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--light); margin-bottom: 1rem; }
-  .chart-wrap { position: relative; width: 100%; }
+  .charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:12px;}
+  .card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.25rem;}
+  .card-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--light);margin-bottom:1rem;}
 
-  /* LEGEND */
-  .legend { display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--mid); }
-  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-  .legend-dash { width: 16px; height: 2px; flex-shrink: 0; background: repeating-linear-gradient(90deg,#555 0,#555 4px,transparent 4px,transparent 8px); }
+  .legend{display:flex;gap:16px;margin-bottom:10px;flex-wrap:wrap;}
+  .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mid);}
+  .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
 
-  /* FILTER BAR */
-  .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
-  .filter-label { font-size: 11px; font-weight: 600; color: var(--light); text-transform: uppercase; letter-spacing: .05em; }
-  .filter-btn { border: 1px solid var(--border); background: var(--white); border-radius: 6px; padding: 5px 12px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--mid); cursor: pointer; transition: all .15s; }
-  .filter-btn:hover { border-color: var(--red); color: var(--red); }
-  .filter-btn.active { background: var(--red); border-color: var(--red); color: #fff; font-weight: 500; }
+  .filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .filter-label{font-size:11px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:.05em;}
+  .filter-btn{border:1px solid var(--border);background:var(--white);border-radius:6px;padding:4px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--mid);cursor:pointer;transition:all .15s;}
+  .filter-btn:hover{border-color:var(--red);color:var(--red);}
+  .filter-btn.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:500;}
 
-  /* TABLE */
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th { text-align: left; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--light); padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  tbody td { padding: 9px 10px; border-bottom: 1px solid #F5F0EA; color: var(--dark); }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover td { background: #FAF6F1; }
-  .num { font-family: 'DM Mono', monospace; font-size: 12px; }
-  .delta-pos { color: #1A7A3C; font-weight: 600; }
-  .delta-neg { color: var(--red); font-weight: 600; }
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead th{text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--light);padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  tbody td{padding:8px 10px;border-bottom:1px solid #F5F0EA;color:var(--dark);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:#FAF6F1;}
+  .num{font-family:'DM Mono',monospace;font-size:12px;}
+  .delta-pos{color:#1A7A3C;font-weight:600;}
+  .delta-neg{color:var(--red);font-weight:600;}
+  .delta-neu{color:var(--light);}
 
-  /* BADGES */
-  .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: .04em; }
-  .b-critica { background: var(--critica-bg); color: var(--critica-text); }
-  .b-alta { background: var(--alta-bg); color: var(--alta-text); }
-  .b-media { background: var(--media-bg); color: var(--media-text); }
-  .b-baja { background: var(--baja-bg); color: var(--baja-text); }
+  .badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
+  .b-critica{background:var(--critica-bg);color:var(--critica-text);}
+  .b-alta{background:var(--alta-bg);color:var(--alta-text);}
+  .b-media{background:var(--media-bg);color:var(--media-text);}
+  .b-baja{background:var(--baja-bg);color:var(--baja-text);}
 
-  /* TREND ARROW */
-  .trend-up { color: #1A7A3C; font-size: 14px; }
-  .trend-dn { color: var(--red); font-size: 14px; }
-  .trend-fl { color: var(--light); font-size: 14px; }
+  .trend-up{color:#1A7A3C;}
+  .trend-dn{color:var(--red);}
+  .trend-fl{color:var(--light);}
 
-  /* BOTTOM ROW */
-  .bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  .footer{text-align:center;font-size:11px;color:var(--light);padding-top:1rem;border-top:1px solid var(--border);}
+  .footer span{color:var(--red);font-weight:600;}
 
-  /* CAIDAS CHART */
-  .caidas-wrap { position: relative; width: 100%; }
-
-  /* FOOTER */
-  .footer { text-align: center; font-size: 11px; color: var(--light); padding-top: 1rem; border-top: 1px solid var(--border); }
-  .footer span { color: var(--red); font-weight: 600; }
-
-  /* UPDATED TAG */
-  #updated { font-size: 11px; color: #666; }
-
-  @media (max-width: 900px) {
-    .kpi-strip { grid-template-columns: repeat(3, 1fr); }
-    .charts-row, .bottom-row { grid-template-columns: 1fr; }
-    .container { padding: 1rem; }
+  @media(max-width:900px){
+    .kpi-strip{grid-template-columns:repeat(3,1fr);}
+    .charts-row,.bottom-row{grid-template-columns:1fr;}
+    .container{padding:1rem;}
   }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-left">
+  <div style="display:flex;align-items:center;gap:12px;">
     <span class="rappi-logo">rappi</span>
     <div class="topbar-sep"></div>
-    <span class="topbar-title">SWA Tracker · Cafam · FARMA CO</span>
+    <span class="topbar-title">SWA Tracker · FARMA CO</span>
   </div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <span class="semana-badge" id="semanaTop">Sem. 18/05/2026</span>
-    <span id="updated"></span>
-    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
-      ↑ Actualizar datos
-    </button>
-    <input type="file" id="fileInput" accept=".xlsx,.csv">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="cv-tag">Cruz Verde MT</span>
+    <span class="semana-badge">Sem. 18/05/2026</span>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- KPI STRIP -->
   <div class="kpi-strip" id="kpiStrip"></div>
 
-  <!-- CHARTS ROW: tendencia + L1 -->
   <div class="charts-row">
     <div class="card">
-      <div class="card-title">Tendencia SWA 7d</div>
+      <div class="card-title">Tendencia SWA 7d · 04–21 Mayo 2026</div>
       <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#FF441B;"></div>SWA Teórico</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#1A1A1A; opacity:.4;"></div>SWA Real CP</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#85C1E9;"></div>SWA Teórico</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1A3A5C;"></div>SWA Real CP</div>
       </div>
-      <div class="chart-wrap" style="height:200px;"><canvas id="chartTrend"></canvas></div>
+      <div style="position:relative;width:100%;height:210px;"><canvas id="chartTrend" role="img" aria-label="Tendencia SWA Cruz Verde"></canvas></div>
     </div>
     <div class="card">
       <div class="card-title">SWA por categoría L1</div>
       <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#F5C4B3;"></div>Sem. ant.</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#FF441B;"></div>Sem. act.</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#B5D4F4;"></div>11/05</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#FF441B;"></div>18/05</div>
       </div>
-      <div class="chart-wrap" style="height:200px;"><canvas id="chartL1"></canvas></div>
+      <div style="position:relative;width:100%;height:210px;"><canvas id="chartL1" role="img" aria-label="SWA por L1"></canvas></div>
     </div>
   </div>
 
-  <!-- BOTTOM ROW: caídas chart + tabla -->
   <div class="bottom-row">
     <div class="card">
       <div class="card-title">Top caídas L2 · ∆ SWA (pp)</div>
-      <div class="caidas-wrap" id="caidasWrap"><canvas id="chartCaidas"></canvas></div>
+      <div id="caidasWrap" style="position:relative;width:100%;"><canvas id="chartCaidas" role="img" aria-label="Caídas SWA por categoría"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-title">Resumen L1</div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Categoría</th><th>SWA ant.</th><th>SWA act.</th><th>∆ pp</th><th>Estado</th></tr></thead>
-          <tbody id="l1Table"></tbody>
-        </table>
+      <div class="card-title">Resumen L1 · 11/05 → 18/05</div>
+      <table>
+        <thead><tr><th>Categoría</th><th>SWA ant.</th><th>SWA act.</th><th>∆ pp</th><th>Estado</th></tr></thead>
+        <tbody id="l1Table"></tbody>
+      </table>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;font-size:12px;">
+          <span style="color:var(--light);font-weight:600;">TOTAL</span>
+          <span class="num">87.81%</span>
+          <span class="num">84.49%</span>
+          <span class="num delta-neg">-3.32</span>
+          <span class="badge b-media">MEDIA</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- FULL TABLE -->
   <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
-      <div class="card-title" style="margin-bottom:0;">Detalle por categoría L2</div>
-      <div class="filter-bar" style="margin-bottom:0;">
-        <span class="filter-label">Filtrar:</span>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:8px;">
+      <div class="card-title" style="margin-bottom:0;">Detalle por categoría L2 · Cruz Verde MT · Sem. 18/05/2026</div>
+      <div class="filter-bar">
+        <span class="filter-label">Ver:</span>
         <button class="filter-btn active" onclick="filterTable('TODAS',this)">Todas</button>
         <button class="filter-btn" onclick="filterTable('CRÍTICA',this)">Crítica</button>
         <button class="filter-btn" onclick="filterTable('ALTA',this)">Alta</button>
@@ -185,239 +157,153 @@
     </div>
     <div class="table-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>Categoría L2</th><th>L1</th>
-            <th>SWA ant.</th><th>SWA act.</th><th>∆ pp</th>
-            <th>ATC</th><th>Peso 7d</th><th>Trend</th><th>Severidad</th><th>Estado</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Categoría L2</th><th>L1</th><th>SWA ant.</th><th>SWA act.</th><th>∆ pp</th><th>ATC</th><th>Peso 7d</th><th>Trend</th><th>Severidad</th></tr></thead>
         <tbody id="mainTable"></tbody>
       </table>
     </div>
   </div>
 
   <div class="footer" style="margin-top:1.5rem;">
-    Generado por <span>Rappi FARMA CO</span> · KAM Analytics · Los datos se actualizan al subir un nuevo archivo Excel
+    <span>Rappi FARMA CO</span> · KAM Analytics · Cruz Verde MT · Mayo 2026
   </div>
 </div>
 
 <script>
-const EMBEDDED = {"caidas":[{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado personal","l2":"Fragancias","swa_ant":100.0,"swa_act":0,"delta":-100.0,"atc":1.0,"peso":4.0,"severidad":"CRÍTICA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Lactancia y accesorios","swa_ant":80.77,"swa_act":27.27,"delta":-53.5,"atc":3.0,"peso":11.0,"severidad":"CRÍTICA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado del bebé","l2":"Fórmulas y alimentos","swa_ant":80.55,"swa_act":70.05,"delta":-10.5,"atc":65.0,"peso":197.0,"severidad":"CRÍTICA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado personal","l2":"Cuidado corporal","swa_ant":86.53,"swa_act":76.52,"delta":-10.0,"atc":147.0,"peso":443.0,"severidad":"CRÍTICA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado personal","l2":"Desodorantes","swa_ant":79.9,"swa_act":71.31,"delta":-8.59,"atc":81.0,"peso":244.0,"severidad":"ALTA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Cuidado de los pies","swa_ant":63.11,"swa_act":55.56,"delta":-7.55,"atc":9.0,"peso":27.0,"severidad":"ALTA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado personal","l2":"Accesorios de belleza","swa_ant":72.22,"swa_act":71.43,"delta":-0.79,"atc":4.0,"peso":14.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Salud sexual","swa_ant":84.94,"swa_act":84.39,"delta":-0.55,"atc":1377.0,"peso":4132.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado personal","l2":"Protección femenina","swa_ant":86.5,"swa_act":86.17,"delta":-0.33,"atc":200.0,"peso":600.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Cuidado oral","swa_ant":88.4,"swa_act":88.12,"delta":-0.28,"atc":280.0,"peso":842.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Depilación y afeitado","swa_ant":78.04,"swa_act":77.78,"delta":-0.26,"atc":15.0,"peso":45.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Medicamentos para la Diabetes","swa_ant":85.04,"swa_act":84.83,"delta":-0.21,"atc":523.0,"peso":1569.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado personal","l2":"Cuidado facial","swa_ant":80.08,"swa_act":80.22,"delta":0.13,"atc":338.0,"peso":1016.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Salud digestiva","swa_ant":89.91,"swa_act":90.32,"delta":0.41,"atc":3319.0,"peso":9958.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Alivio del dolor","swa_ant":88.53,"swa_act":88.98,"delta":0.45,"atc":2256.0,"peso":6769.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Gripa y tos","swa_ant":92.0,"swa_act":92.76,"delta":0.76,"atc":1726.0,"peso":5179.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Botiquín y primeros auxilios","swa_ant":82.98,"swa_act":83.77,"delta":0.79,"atc":517.0,"peso":1553.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Salud nutricional","swa_ant":82.6,"swa_act":83.72,"delta":1.12,"atc":751.0,"peso":2254.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado personal","l2":"Cuidado del cabello","swa_ant":88.74,"swa_act":90.0,"delta":1.26,"atc":106.0,"peso":320.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Alergias","swa_ant":86.33,"swa_act":88.02,"delta":1.69,"atc":570.0,"peso":1711.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Otros medicamentos","swa_ant":77.35,"swa_act":79.06,"delta":1.7,"atc":2105.0,"peso":6317.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Higiene y cuidado","swa_ant":86.15,"swa_act":87.94,"delta":1.78,"atc":171.0,"peso":514.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Cuidado dermatológico","swa_ant":86.53,"swa_act":88.68,"delta":2.15,"atc":977.0,"peso":2932.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Salud visual","swa_ant":83.52,"swa_act":86.34,"delta":2.82,"atc":319.0,"peso":959.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Cuidado del bebé","l2":"Pañales y toallitas","swa_ant":75.19,"swa_act":79.74,"delta":4.55,"atc":353.0,"peso":1061.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Productos naturales","swa_ant":84.85,"swa_act":89.43,"delta":4.59,"atc":82.0,"peso":246.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Mundo COVID","swa_ant":83.03,"swa_act":87.8,"delta":4.77,"atc":27.0,"peso":82.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Protección incontinencia","swa_ant":78.17,"swa_act":86.73,"delta":8.57,"atc":65.0,"peso":196.0,"severidad":"BAJA","causa":"","estado":"Pendiente"},{"fecha":"18/05/2026","semana":"18/05/2026","marca":"Cafam","l1":"Farmacia","l2":"Equipo y material médico","swa_ant":71.55,"swa_act":82.54,"delta":10.99,"atc":112.0,"peso":338.0,"severidad":"BAJA","causa":"","estado":"Pendiente"}],"comp":[{"l2":"Fragancias","swa_ant":100.0,"swa_act":0,"delta":-100.0,"trend":"▼","severidad":"CRÍTICA"},{"l2":"Lactancia y accesorios","swa_ant":80.77,"swa_act":27.27,"delta":-53.5,"trend":"▼","severidad":"CRÍTICA"},{"l2":"Fórmulas y alimentos","swa_ant":80.55,"swa_act":70.05,"delta":-10.5,"trend":"▼","severidad":"CRÍTICA"},{"l2":"Cuidado corporal","swa_ant":86.53,"swa_act":76.52,"delta":-10.0,"trend":"▼","severidad":"CRÍTICA"},{"l2":"Desodorantes","swa_ant":79.9,"swa_act":71.31,"delta":-8.59,"trend":"▼","severidad":"ALTA"},{"l2":"Cuidado de los pies","swa_ant":63.11,"swa_act":55.56,"delta":-7.55,"trend":"▼","severidad":"ALTA"},{"l2":"Accesorios de belleza","swa_ant":72.22,"swa_act":71.43,"delta":-0.79,"trend":"→","severidad":"BAJA"},{"l2":"Salud sexual","swa_ant":84.94,"swa_act":84.39,"delta":-0.55,"trend":"→","severidad":"BAJA"},{"l2":"Protección femenina","swa_ant":86.5,"swa_act":86.17,"delta":-0.33,"trend":"→","severidad":"BAJA"},{"l2":"Cuidado oral","swa_ant":88.4,"swa_act":88.12,"delta":-0.28,"trend":"→","severidad":"BAJA"},{"l2":"Depilación y afeitado","swa_ant":78.04,"swa_act":77.78,"delta":-0.26,"trend":"→","severidad":"BAJA"},{"l2":"Medicamentos para la Diabetes","swa_ant":85.04,"swa_act":84.83,"delta":-0.21,"trend":"→","severidad":"BAJA"},{"l2":"Cuidado facial","swa_ant":80.08,"swa_act":80.22,"delta":0.13,"trend":"→","severidad":"BAJA"},{"l2":"Salud digestiva","swa_ant":89.91,"swa_act":90.32,"delta":0.41,"trend":"→","severidad":"BAJA"},{"l2":"Alivio del dolor","swa_ant":88.53,"swa_act":88.98,"delta":0.45,"trend":"→","severidad":"BAJA"},{"l2":"Gripa y tos","swa_ant":92.0,"swa_act":92.76,"delta":0.76,"trend":"→","severidad":"BAJA"},{"l2":"Botiquín y primeros auxilios","swa_ant":82.98,"swa_act":83.77,"delta":0.79,"trend":"→","severidad":"BAJA"},{"l2":"Salud nutricional","swa_ant":82.6,"swa_act":83.72,"delta":1.12,"trend":"▲","severidad":"BAJA"},{"l2":"Cuidado del cabello","swa_ant":88.74,"swa_act":90.0,"delta":1.26,"trend":"▲","severidad":"BAJA"},{"l2":"Alergias","swa_ant":86.33,"swa_act":88.02,"delta":1.69,"trend":"▲","severidad":"BAJA"},{"l2":"Otros medicamentos","swa_ant":77.35,"swa_act":79.06,"delta":1.7,"trend":"▲","severidad":"BAJA"},{"l2":"Higiene y cuidado","swa_ant":86.15,"swa_act":87.94,"delta":1.78,"trend":"▲","severidad":"BAJA"},{"l2":"Cuidado dermatológico","swa_ant":86.53,"swa_act":88.68,"delta":2.15,"trend":"▲","severidad":"BAJA"},{"l2":"Salud visual","swa_ant":83.52,"swa_act":86.34,"delta":2.82,"trend":"▲","severidad":"BAJA"},{"l2":"Pañales y toallitas","swa_ant":75.19,"swa_act":79.74,"delta":4.55,"trend":"▲","severidad":"BAJA"},{"l2":"Productos naturales","swa_ant":84.85,"swa_act":89.43,"delta":4.59,"trend":"▲","severidad":"BAJA"},{"l2":"Mundo COVID","swa_ant":83.03,"swa_act":87.8,"delta":4.77,"trend":"▲","severidad":"BAJA"},{"l2":"Protección incontinencia","swa_ant":78.17,"swa_act":86.73,"delta":8.57,"trend":"▲","severidad":"BAJA"},{"l2":"Equipo y material médico","swa_ant":71.55,"swa_act":82.54,"delta":10.99,"trend":"▲","severidad":"BAJA"}],"trend":{"labels":["04/05","05/05","06/05","07/05","08/05","09/05","10/05","11/05","12/05","13/05","14/05","15/05","16/05","17/05","18/05","19/05"],"teorico":[86.1,85.5,85.1,85.2,85.6,85.8,85.6,85.0,85.1,85.0,85.5,86.5,87.0,87.2,86.9,86.4],"real":[88.4,88.1,88.5,88.4,88.5,88.6,88.4,88.0,88.2,88.2,88.9,88.9,90.3,90.3,89.9,89.4]},"l1":[{"cat":"Farmacia","swa_ant":86.16,"swa_act":87.1,"delta":0.94,"severidad":"BAJA"},{"cat":"Cuidado personal","swa_ant":84.59,"swa_act":82.56,"delta":-2.03,"severidad":"MEDIA"},{"cat":"Cuidado del bebé","swa_ant":78.55,"swa_act":80.71,"delta":2.16,"severidad":"BAJA"}],"semana":"18/05/2026","aliado":"Cafam"};
 
-let D = EMBEDDED;
+const D = {"caidas": [{"l2": "Depilación y afeitado", "l1": "Farmacia", "swa_ant": 67.83, "swa_act": 46.79, "delta": -21.04, "atc": 88.0, "peso": 265.0, "severidad": "CRÍTICA", "trend": "▼"}, {"l2": "Protección femenina", "l1": "Cuidado personal", "swa_ant": 88.89, "swa_act": 77.41, "delta": -11.48, "atc": 648.0, "peso": 1943.0, "severidad": "CRÍTICA", "trend": "▼"}, {"l2": "Higiene y cuidado", "l1": "Cuidado personal", "swa_ant": 87.19, "swa_act": 77.39, "delta": -9.8, "atc": 289.0, "peso": 867.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Salud visual", "l1": "Farmacia", "swa_ant": 87.38, "swa_act": 77.82, "delta": -9.56, "atc": 733.0, "peso": 2200.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Cuidado oral", "l1": "Farmacia", "swa_ant": 87.78, "swa_act": 79.9, "delta": -7.88, "atc": 915.0, "peso": 2746.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Cuidado dermatológico", "l1": "Farmacia", "swa_ant": 86.24, "swa_act": 80.0, "delta": -6.24, "atc": 1700.0, "peso": 5100.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Desodorantes", "l1": "Cuidado personal", "swa_ant": 78.41, "swa_act": 72.53, "delta": -5.88, "atc": 360.0, "peso": 1081.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Otros medicamentos", "l1": "Farmacia", "swa_ant": 83.28, "swa_act": 78.03, "delta": -5.24, "atc": 3382.0, "peso": 10147.0, "severidad": "ALTA", "trend": "▼"}, {"l2": "Alergias", "l1": "Farmacia", "swa_ant": 86.72, "swa_act": 81.91, "delta": -4.81, "atc": 958.0, "peso": 2874.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Medicamentos para la Diabetes", "l1": "Farmacia", "swa_ant": 91.52, "swa_act": 87.62, "delta": -3.89, "atc": 407.0, "peso": 1220.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Gripa y tos", "l1": "Farmacia", "swa_ant": 92.93, "swa_act": 89.11, "delta": -3.82, "atc": 4893.0, "peso": 14678.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Cuidado facial", "l1": "Cuidado personal", "swa_ant": 87.34, "swa_act": 84.01, "delta": -3.34, "atc": 727.0, "peso": 2182.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Salud sexual", "l1": "Farmacia", "swa_ant": 89.3, "swa_act": 86.5, "delta": -2.8, "atc": 3969.0, "peso": 11908.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Productos naturales", "l1": "Farmacia", "swa_ant": 84.44, "swa_act": 81.77, "delta": -2.66, "atc": 349.0, "peso": 1048.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Cuidado corporal", "l1": "Cuidado personal", "swa_ant": 80.58, "swa_act": 78.16, "delta": -2.43, "atc": 496.0, "peso": 1488.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Salud digestiva", "l1": "Farmacia", "swa_ant": 91.55, "swa_act": 89.16, "delta": -2.39, "atc": 5898.0, "peso": 17695.0, "severidad": "MEDIA", "trend": "▼"}, {"l2": "Fórmulas y alimentos", "l1": "Cuidado del bebé", "swa_ant": 84.75, "swa_act": 82.9, "delta": -1.85, "atc": 719.0, "peso": 2158.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Salud nutricional", "l1": "Farmacia", "swa_ant": 88.47, "swa_act": 86.71, "delta": -1.76, "atc": 2170.0, "peso": 6510.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Protección incontinencia", "l1": "Farmacia", "swa_ant": 70.38, "swa_act": 69.06, "delta": -1.32, "atc": 167.0, "peso": 501.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Alivio del dolor", "l1": "Farmacia", "swa_ant": 86.61, "swa_act": 85.76, "delta": -0.85, "atc": 3827.0, "peso": 11482.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Equipo y material médico", "l1": "Farmacia", "swa_ant": 80.88, "swa_act": 80.29, "delta": -0.59, "atc": 482.0, "peso": 1446.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Botiquín y primeros auxilios", "l1": "Farmacia", "swa_ant": 82.83, "swa_act": 82.34, "delta": -0.5, "atc": 1570.0, "peso": 4710.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Cuidado del cabello", "l1": "Cuidado personal", "swa_ant": 83.44, "swa_act": 83.06, "delta": -0.38, "atc": 403.0, "peso": 1210.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Fragancias", "l1": "Cuidado personal", "swa_ant": 100.0, "swa_act": 100.0, "delta": 0.0, "atc": 1.0, "peso": 2.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Lactancia y accesorios", "l1": "Cuidado del bebé", "swa_ant": 100.0, "swa_act": 100.0, "delta": 0.0, "atc": 1.0, "peso": 3.0, "severidad": "BAJA", "trend": "→"}, {"l2": "Accesorios de belleza", "l1": "Cuidado personal", "swa_ant": 80.14, "swa_act": 82.28, "delta": 2.14, "atc": 53.0, "peso": 158.0, "severidad": "BAJA", "trend": "▲"}, {"l2": "Pañales y toallitas", "l1": "Cuidado del bebé", "swa_ant": 83.29, "swa_act": 85.93, "delta": 2.64, "atc": 334.0, "peso": 1002.0, "severidad": "BAJA", "trend": "▲"}, {"l2": "Cuidado de los pies", "l1": "Farmacia", "swa_ant": 78.22, "swa_act": 81.75, "delta": 3.53, "atc": 42.0, "peso": 126.0, "severidad": "BAJA", "trend": "▲"}, {"l2": "Mundo COVID", "l1": "Farmacia", "swa_ant": 71.43, "swa_act": 100.0, "delta": 28.57, "atc": 1.0, "peso": 2.0, "severidad": "BAJA", "trend": "▲"}], "trend": {"labels": ["04/05", "05/05", "06/05", "07/05", "08/05", "09/05", "10/05", "11/05", "12/05", "13/05", "14/05", "15/05", "16/05", "17/05", "18/05", "19/05", "20/05", "21/05"], "teorico": [81.7, 84.1, 86.8, 90.6, 75.9, 84.8, 86.1, 86.9, 87.9, 88.0, 91.3, 91.6, 90.3, 90.5, 83.9, 78.3, 84.1, 81.9], "real": [81.0, 84.1, 86.2, null, null, null, 84.8, 85.2, 85.7, 85.4, 88.0, 88.5, 90.3, 87.7, 87.9, null, 81.9, 80.0]}, "l1": [{"cat": "Farmacia", "swa_ant": 88.25, "swa_act": 85.25, "delta": -3.0, "sev": "MEDIA"}, {"cat": "Cuidado personal", "swa_ant": 84.99, "swa_act": 78.94, "delta": -6.05, "sev": "ALTA"}, {"cat": "Cuidado del bebé", "swa_ant": 84.93, "swa_act": 82.48, "delta": -2.45, "sev": "MEDIA"}], "semana": "18/05/2026", "aliado": "Cruz Verde MT"};
 let currentFilter = 'TODAS';
 let chartTrend, chartL1, chartCaidas;
 
 function badge(sev) {
-  const map = {'CRÍTICA':'critica','ALTA':'alta','MEDIA':'media','BAJA':'baja'};
-  return `<span class="badge b-${map[sev]||'baja'}">${sev}</span>`;
+  const m = {'CRÍTICA':'critica','ALTA':'alta','MEDIA':'media','BAJA':'baja'};
+  return `<span class="badge b-${m[sev]||'baja'}">${sev}</span>`;
 }
-function deltaClass(v) { return v < 0 ? 'delta-neg' : v > 0 ? 'delta-pos' : ''; }
-function trendIcon(t) {
-  if (t==='▼') return '<span class="trend-dn">▼</span>';
-  if (t==='▲') return '<span class="trend-up">▲</span>';
+function dc(v) { return v<0?'delta-neg':v>0?'delta-pos':'delta-neu'; }
+function tIcon(t) {
+  if(t==='▼') return '<span class="trend-dn">▼</span>';
+  if(t==='▲') return '<span class="trend-up">▲</span>';
   return '<span class="trend-fl">→</span>';
 }
-function fmt(v, dec=2) { return parseFloat(v).toFixed(dec); }
 
 function renderKPIs() {
-  const criticas = D.caidas.filter(r=>r.severidad==='CRÍTICA').length;
-  const altas = D.caidas.filter(r=>r.severidad==='ALTA').length;
-  const swaAct = 86.55;
-  const delta = 0.84;
+  const crit = D.caidas.filter(r=>r.severidad==='CRÍTICA').length;
+  const alta = D.caidas.filter(r=>r.severidad==='ALTA').length;
+  const med  = D.caidas.filter(r=>r.severidad==='MEDIA').length;
   document.getElementById('kpiStrip').innerHTML = `
-    <div class="kpi"><div class="kpi-label">SWA Total</div><div class="kpi-val">${swaAct}%</div><div class="kpi-sub">semana ${D.semana}</div></div>
-    <div class="kpi"><div class="kpi-label">∆ vs sem. ant.</div><div class="kpi-val ${delta>=0?'pos':'neg'}">${delta>=0?'+':''}${delta} pp</div><div class="kpi-sub">variación</div></div>
-    <div class="kpi"><div class="kpi-label">Críticas</div><div class="kpi-val neg">${criticas}</div><div class="kpi-sub">categorías</div></div>
-    <div class="kpi"><div class="kpi-label">Altas</div><div class="kpi-val" style="color:#A05C00">${altas}</div><div class="kpi-sub">categorías</div></div>
-    <div class="kpi"><div class="kpi-label">Monitoreadas</div><div class="kpi-val">${D.caidas.length}</div><div class="kpi-sub">categorías L2</div></div>
-  `;
-  document.getElementById('semanaTop').textContent = 'Sem. ' + D.semana;
+    <div class="kpi"><div class="kpi-label">SWA Total</div><div class="kpi-val">84.49%</div><div class="kpi-sub">sem. 18/05/2026</div></div>
+    <div class="kpi"><div class="kpi-label">∆ vs sem. ant.</div><div class="kpi-val neg">-3.32 pp</div><div class="kpi-sub">vs 11/05/2026</div></div>
+    <div class="kpi"><div class="kpi-label">Críticas</div><div class="kpi-val neg">${crit}</div><div class="kpi-sub">categorías L2</div></div>
+    <div class="kpi"><div class="kpi-label">Altas</div><div class="kpi-val warn">${alta}</div><div class="kpi-sub">categorías L2</div></div>
+    <div class="kpi"><div class="kpi-label">Medias</div><div class="kpi-val info">${med}</div><div class="kpi-sub">categorías L2</div></div>`;
 }
 
 function renderTrendChart() {
-  if (chartTrend) chartTrend.destroy();
+  if(chartTrend) chartTrend.destroy();
   chartTrend = new Chart(document.getElementById('chartTrend'), {
-    type: 'line',
-    data: {
+    type:'line',
+    data:{
       labels: D.trend.labels,
-      datasets: [
-        { label: 'SWA Teórico', data: D.trend.teorico, borderColor: '#FF441B', borderWidth: 2.5, pointRadius: 3, pointBackgroundColor: '#FF441B', tension: 0.35, fill: false },
-        { label: 'SWA Real CP', data: D.trend.real, borderColor: '#1A1A1A', borderWidth: 2, borderDash: [6,3], pointRadius: 3, pointBackgroundColor: '#1A1A1A', tension: 0.35, fill: false }
+      datasets:[
+        {label:'Teórico',data:D.trend.teorico,borderColor:'#85C1E9',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#85C1E9',tension:0.35,fill:false,spanGaps:true},
+        {label:'Real CP',data:D.trend.real,borderColor:'#1A3A5C',borderWidth:2,borderDash:[6,3],pointRadius:3,pointBackgroundColor:'#1A3A5C',tension:0.35,fill:false,spanGaps:false}
       ]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' } } },
-      scales: {
-        y: { min: 83, max: 92, ticks: { callback: v => v + '%', font: { size: 11, family: 'DM Mono' } }, grid: { color: '#EDE8E0' } },
-        x: { ticks: { font: { size: 10 }, maxRotation: 45, autoSkip: false } }
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}},
+      scales:{
+        y:{min:74,max:94,ticks:{callback:v=>v+'%',font:{size:11,family:'DM Mono'}},grid:{color:'#EDE8E0'}},
+        x:{ticks:{font:{size:10},maxRotation:45,autoSkip:false}}
       }
     }
   });
 }
 
 function renderL1Chart() {
-  if (chartL1) chartL1.destroy();
+  if(chartL1) chartL1.destroy();
   chartL1 = new Chart(document.getElementById('chartL1'), {
-    type: 'bar',
-    data: {
-      labels: D.l1.map(r => r.cat),
-      datasets: [
-        { label: 'Sem. ant.', data: D.l1.map(r => r.swa_ant), backgroundColor: '#F5C4B3', borderRadius: 4 },
-        { label: 'Sem. act.', data: D.l1.map(r => r.swa_act), backgroundColor: '#FF441B', borderRadius: 4 }
+    type:'bar',
+    data:{
+      labels: D.l1.map(r=>r.cat),
+      datasets:[
+        {label:'Sem. ant.',data:D.l1.map(r=>r.swa_ant),backgroundColor:'#B5D4F4',borderRadius:4},
+        {label:'Sem. act.',data:D.l1.map(r=>r.swa_act),backgroundColor:'#FF441B',borderRadius:4}
       ]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' } } },
-      scales: {
-        y: { min: 75, max: 92, ticks: { callback: v => v + '%', font: { size: 11, family: 'DM Mono' } }, grid: { color: '#EDE8E0' } },
-        x: { ticks: { font: { size: 11 } } }
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}},
+      scales:{
+        y:{min:75,max:92,ticks:{callback:v=>v+'%',font:{size:11,family:'DM Mono'}},grid:{color:'#EDE8E0'}},
+        x:{ticks:{font:{size:10}}}
       }
     }
   });
 }
 
 function renderCaidasChart() {
-  if (chartCaidas) chartCaidas.destroy();
-  const top = [...D.caidas].filter(r => r.delta < 0).sort((a,b) => a.delta - b.delta).slice(0, 10);
-  const h = top.length * 40 + 60;
-  document.getElementById('caidasWrap').style.height = h + 'px';
-  const colors = top.map(r => r.severidad === 'CRÍTICA' ? '#FF441B' : r.severidad === 'ALTA' ? '#FF6B35' : '#F5C4B3');
+  if(chartCaidas) chartCaidas.destroy();
+  const top = [...D.caidas].filter(r=>r.delta<0).sort((a,b)=>a.delta-b.delta).slice(0,10);
+  const h = top.length*40+60;
+  document.getElementById('caidasWrap').style.height = h+'px';
+  const colors = top.map(r=>r.severidad==='CRÍTICA'?'#FF441B':r.severidad==='ALTA'?'#FF6B35':r.severidad==='MEDIA'?'#85C1E9':'#B5D4F4');
   chartCaidas = new Chart(document.getElementById('chartCaidas'), {
-    type: 'bar',
-    data: {
-      labels: top.map(r => r.l2),
-      datasets: [{ label: '∆ pp', data: top.map(r => parseFloat(r.delta.toFixed(2))), backgroundColor: colors, borderRadius: 4 }]
+    type:'bar',
+    data:{
+      labels:top.map(r=>r.l2),
+      datasets:[{label:'∆ pp',data:top.map(r=>+r.delta.toFixed(2)),backgroundColor:colors,borderRadius:4}]
     },
-    options: {
-      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => '∆ ' + ctx.parsed.x.toFixed(2) + ' pp' } } },
-      scales: {
-        x: { ticks: { callback: v => v + ' pp', font: { size: 11, family: 'DM Mono' } }, grid: { color: '#EDE8E0' } },
-        y: { ticks: { font: { size: 11 } } }
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'∆ '+ctx.parsed.x.toFixed(2)+' pp'}}},
+      scales:{
+        x:{ticks:{callback:v=>v+' pp',font:{size:11,family:'DM Mono'}},grid:{color:'#EDE8E0'}},
+        y:{ticks:{font:{size:11}}}
       }
     }
   });
 }
 
 function renderL1Table() {
-  document.getElementById('l1Table').innerHTML = D.l1.map(r => `
+  document.getElementById('l1Table').innerHTML = D.l1.map(r=>`
     <tr>
       <td>${r.cat}</td>
-      <td class="num">${fmt(r.swa_ant)}%</td>
-      <td class="num">${fmt(r.swa_act)}%</td>
-      <td class="num ${deltaClass(r.delta)}">${r.delta>0?'+':''}${fmt(r.delta)}</td>
-      <td>${badge(r.severidad)}</td>
+      <td class="num">${r.swa_ant.toFixed(2)}%</td>
+      <td class="num">${r.swa_act.toFixed(2)}%</td>
+      <td class="num ${dc(r.delta)}">${r.delta>0?'+':''}${r.delta.toFixed(2)}</td>
+      <td>${badge(r.sev)}</td>
     </tr>`).join('');
 }
 
 function filterTable(sev, btn) {
   currentFilter = sev;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderMainTable();
 }
 
 function renderMainTable() {
-  const rows = currentFilter === 'TODAS' ? D.caidas : D.caidas.filter(r => r.severidad === currentFilter);
-  const comp = Object.fromEntries(D.comp.map(c => [c.l2, c]));
-  document.getElementById('mainTable').innerHTML = rows.map(r => {
-    const c = comp[r.l2] || {};
-    const trend = c.trend || '→';
-    return `<tr>
+  const rows = currentFilter==='TODAS' ? D.caidas : D.caidas.filter(r=>r.severidad===currentFilter);
+  document.getElementById('mainTable').innerHTML = rows.map(r=>`
+    <tr>
       <td><strong>${r.l2}</strong></td>
-      <td style="color:#888">${r.l1}</td>
-      <td class="num">${fmt(r.swa_ant)}%</td>
-      <td class="num">${fmt(r.swa_act)}%</td>
-      <td class="num ${deltaClass(r.delta)}">${r.delta>0?'+':''}${fmt(r.delta)}</td>
+      <td style="color:var(--light);font-size:12px">${r.l1}</td>
+      <td class="num">${r.swa_ant.toFixed(2)}%</td>
+      <td class="num">${r.swa_act.toFixed(2)}%</td>
+      <td class="num ${dc(r.delta)}">${r.delta>0?'+':''}${r.delta.toFixed(2)}</td>
       <td class="num">${r.atc}</td>
       <td class="num">${r.peso}</td>
-      <td>${trendIcon(trend)}</td>
+      <td>${tIcon(r.trend)}</td>
       <td>${badge(r.severidad)}</td>
-      <td><span style="color:#888;font-size:12px">${r.estado}</span></td>
-    </tr>`;
-  }).join('');
+    </tr>`).join('');
 }
 
-function render() {
-  renderKPIs();
-  renderTrendChart();
-  renderL1Chart();
-  renderCaidasChart();
-  renderL1Table();
-  renderMainTable();
-}
-
-// FILE UPLOAD
-document.getElementById('fileInput').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    try {
-      const wb = XLSX.read(evt.target.result, { type: 'binary' });
-      const newD = JSON.parse(JSON.stringify(D));
-
-      const shReg = wb.SheetNames.find(s => /registro|caidas|caídas/i.test(s));
-      if (shReg) {
-        const rows = XLSX.utils.sheet_to_json(wb.Sheets[shReg]);
-        const mapped = rows.filter(r => r['Categoría L2'] || r['Categoria L2']).map(r => ({
-          fecha: r['Fecha Registro']||'', semana: r['Semana']||'', marca: r['Marca / Cadena']||'Cafam',
-          l1: r['Categoría L1']||r['Categoria L1']||'',
-          l2: r['Categoría L2']||r['Categoria L2']||'',
-          swa_ant: parseFloat(r['SWA Sem. Ant.']||0)*100,
-          swa_act: parseFloat(r['SWA Sem. Act.']||0)*100,
-          delta: parseFloat(r['∆ SWA (pp)']||r['Delta SWA']||0),
-          atc: parseFloat(r['ATC Sem. Act.']||r['ATC']||0),
-          peso: parseFloat(r['Peso Total 7D']||r['Peso']||0),
-          severidad: r['Severidad']||'BAJA', causa: r['Causa / Contexto']||'', estado: r['Estado']||'Pendiente'
-        }));
-        if (mapped.length > 0) { newD.caidas = mapped; newD.semana = mapped[0].semana; }
-      }
-
-      const shTrend = wb.SheetNames.find(s => /gr.fica|swa 7d|tendencia/i.test(s));
-      if (shTrend) {
-        const rows = XLSX.utils.sheet_to_json(wb.Sheets[shTrend]);
-        if (rows.length > 0) {
-          newD.trend = {
-            labels: rows.map(r => r['Fecha']||''),
-            teorico: rows.map(r => parseFloat(r['SWA Teórico']||r['Teorico']||0)*100),
-            real: rows.map(r => parseFloat(r['SWA Real (CP)']||r['Real']||0)*100)
-          };
-        }
-      }
-
-      const shL1 = wb.SheetNames.find(s => /resumen.*l1|l1.*resumen/i.test(s));
-      if (shL1) {
-        const rows = XLSX.utils.sheet_to_json(wb.Sheets[shL1]);
-        const mapped = rows.filter(r => r['L1 Categoría']||r['Categoria L1']).map(r => {
-          const keys = Object.keys(r);
-          const swaActKey = keys.filter(k => k.includes('SWA') && !k.includes('∆') && !k.includes('ant') && !k.includes('Ant')).pop();
-          return {
-            cat: r['L1 Categoría']||r['Categoria L1'],
-            swa_ant: parseFloat(r['SWA 7d']||0)*100,
-            swa_act: parseFloat(r[swaActKey]||0)*100,
-            delta: parseFloat(r['∆ SWA (pp)']||0),
-            severidad: r['Severidad']||'BAJA'
-          };
-        });
-        if (mapped.length > 0) newD.l1 = mapped;
-      }
-
-      D = newD;
-      document.getElementById('updated').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-CO', {hour:'2-digit',minute:'2-digit'});
-      render();
-    } catch(err) {
-      alert('Error al leer el archivo. Verifica que sea el tracker SWA con las mismas hojas.');
-    }
-  };
-  reader.readAsBinaryString(file);
-});
-
-render();
+renderKPIs();
+renderTrendChart();
+renderL1Chart();
+renderCaidasChart();
+renderL1Table();
+renderMainTable();
 </script>
 </body>
 </html>
