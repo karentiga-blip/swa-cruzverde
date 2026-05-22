@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mounjaro Dashboard — Cruz Verde</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; min-height: 100vh; padding: 2rem 1rem; }
+    .container { max-width: 780px; margin: 0 auto; }
+    h1 { font-size: 18px; font-weight: 600; margin-bottom: 0.25rem; color: #1a1a1a; }
+    .subtitle { font-size: 13px; color: #666; margin-bottom: 1.5rem; }
+
+    /* Main tabs */
+    .main-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab-btn { background: transparent; border: 1px solid #d0d0d0; border-radius: 8px; padding: 8px 22px; font-size: 13px; cursor: pointer; color: #555; transition: all 0.15s; }
+    .tab-btn:hover { border-color: #FF441B; color: #FF441B; }
+    .tab-btn.active { background: #FF441B; color: #fff; font-weight: 600; border-color: #FF441B; }
+
+    /* Sub tabs */
+    .sub-tabs { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+    .sub-btn { background: transparent; border: 1px solid #d0d0d0; border-radius: 8px; padding: 5px 16px; font-size: 12px; cursor: pointer; color: #555; transition: all 0.15s; }
+    .sub-btn:hover { border-color: #333; color: #333; }
+    .sub-btn.active { background: #fff; color: #1a1a1a; font-weight: 600; border-color: #333; }
+
+    /* KPI cards */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+    .kpi { background: #fff; border-radius: 8px; padding: 0.75rem 1rem; border: 1px solid #e8e8e8; }
+    .kpi .lbl { font-size: 11px; color: #888; margin-bottom: 4px; }
+    .kpi .val { font-size: 20px; font-weight: 600; }
+    .kpi .sub { font-size: 11px; color: #888; margin-top: 2px; }
+
+    /* Section titles */
+    .section-title { font-size: 11px; font-weight: 600; color: #FF441B; margin: 1.25rem 0 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Legend */
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 0.75rem; font-size: 12px; color: #555; align-items: center; }
+    .leg-sq { width: 11px; height: 11px; border-radius: 2px; display: inline-block; vertical-align: middle; margin-right: 4px; }
+    .leg-line { width: 22px; height: 3px; border-radius: 2px; display: inline-block; vertical-align: middle; margin-right: 4px; }
+    .leg-dash { width: 22px; display: inline-block; vertical-align: middle; margin-right: 4px; border-top: 2px dashed #888; }
+
+    /* Chart wrappers */
+    .chart-wrap { position: relative; width: 100%; }
+
+    /* City bars */
+    .city-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; font-size: 12px; }
+    .city-name { width: 100px; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .city-bar-bg { flex: 1; background: #efefef; border-radius: 3px; height: 8px; overflow: hidden; }
+    .city-bar { height: 8px; border-radius: 3px; min-width: 3px; }
+    .city-pct { width: 36px; text-align: right; font-weight: 600; }
+    .city-meta { width: 60px; text-align: right; color: #888; }
+    .city-units { width: 70px; text-align: right; color: #888; }
+
+    .c-danger { color: #A32D2D; }
+    .c-ok { color: #1D9E75; }
+    .c-warn { color: #BA7517; }
+
+    /* Panels */
+    .panel { display: none; }
+    .panel.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mounjaro — Cruz Verde</h1>
+    <p class="subtitle">Análisis de precios y stock por presentación</p>
+
+    <div class="main-tabs">
+      <button class="tab-btn active" onclick="setMain('precios')" id="mainBtn-precios">💊 Precios</button>
+      <button class="tab-btn" onclick="setMain('stock')" id="mainBtn-stock">📦 Stock</button>
+    </div>
+
+    <!-- ===== PRECIOS ===== -->
+    <div id="tab-precios" class="panel active">
+      <div class="sub-tabs">
+        <button class="sub-btn active" onclick="setPrecios('25')" id="pBtn25">2.5 mg</button>
+        <button class="sub-btn" onclick="setPrecios('50')" id="pBtn50">5 mg</button>
+      </div>
+
+      <div id="pp25" class="panel active">
+        <div class="kpi-grid">
+          <div class="kpi"><p class="lbl">Cruz Verde</p><p class="val" style="color:#1D9E75;">$252.000</p></div>
+          <div class="kpi"><p class="lbl">Promedio aliados</p><p class="val">$241.521</p></div>
+          <div class="kpi"><p class="lbl">Diferencia vs promedio</p><p class="val c-warn">+$10.479</p><p class="sub">+4,3% más caro</p></div>
+        </div>
+        <p class="section-title">Precio por aliado — Mounjaro 2.5 mg</p>
+        <div class="legend">
+          <span><span class="leg-line" style="background:#1D9E75;"></span><strong>Cruz Verde</strong></span>
+          <span><span class="leg-dash"></span>Promedio</span>
+          <span><span class="leg-sq" style="background:#378ADD;"></span>Aliado 1</span>
+          <span><span class="leg-sq" style="background:#D4537E;"></span>Aliado 2</span>
+          <span><span class="leg-sq" style="background:#BA7517;"></span>Aliado 3</span>
+          <span><span class="leg-sq" style="background:#7F77DD;"></span>Aliado 4</span>
+          <span><span class="leg-sq" style="background:#D85A30;"></span>Aliado 5</span>
+          <span><span class="leg-sq" style="background:rgba(29,158,117,0.45);"></span>Aliado 6</span>
+        </div>
+        <div class="chart-wrap" style="height:260px;"><canvas id="cP25" role="img" aria-label="Precios Mounjaro 2.5mg por aliado. Cruz Verde $252.000 por encima del promedio $241.521."></canvas></div>
+      </div>
+
+      <div id="pp50" class="panel">
+        <div class="kpi-grid">
+          <div class="kpi"><p class="lbl">Cruz Verde</p><p class="val" style="color:#1D9E75;">$335.000</p></div>
+          <div class="kpi"><p class="lbl">Promedio aliados</p><p class="val">$326.657</p></div>
+          <div class="kpi"><p class="lbl">Diferencia vs promedio</p><p class="val c-warn">+$8.343</p><p class="sub">+2,6% más caro</p></div>
+        </div>
+        <p class="section-title">Precio por aliado — Mounjaro 5 mg</p>
+        <div class="legend">
+          <span><span class="leg-line" style="background:#1D9E75;"></span><strong>Cruz Verde</strong></span>
+          <span><span class="leg-dash"></span>Promedio</span>
+          <span><span class="leg-sq" style="background:#378ADD;"></span>Aliado 1</span>
+          <span><span class="leg-sq" style="background:#D4537E;"></span>Aliado 2</span>
+          <span><span class="leg-sq" style="background:#BA7517;"></span>Aliado 3</span>
+          <span><span class="leg-sq" style="background:#7F77DD;"></span>Aliado 4</span>
+          <span><span class="leg-sq" style="background:#D85A30;"></span>Aliado 5</span>
+          <span><span class="leg-sq" style="background:rgba(29,158,117,0.45);"></span>Aliado 6</span>
+        </div>
+        <div class="chart-wrap" style="height:260px;"><canvas id="cP50" role="img" aria-label="Precios Mounjaro 5mg por aliado. Cruz Verde $335.000 por encima del promedio $326.657."></canvas></div>
+      </div>
+    </div>
+
+    <!-- ===== STOCK ===== -->
+    <div id="tab-stock" class="panel">
+      <div class="sub-tabs">
+        <button class="sub-btn active" onclick="setStock('25')" id="sBtn25">2.5 mg</button>
+        <button class="sub-btn" onclick="setStock('50')" id="sBtn50">5 mg</button>
+      </div>
+
+      <div id="sp25" class="panel active">
+        <div class="kpi-grid">
+          <div class="kpi"><p class="lbl">Total tiendas</p><p class="val">164</p></div>
+          <div class="kpi"><p class="lbl">Con stock</p><p class="val c-ok">136</p><p class="sub">82,9%</p></div>
+          <div class="kpi"><p class="lbl">Sin stock</p><p class="val c-danger">28</p><p class="sub">17,1%</p></div>
+          <div class="kpi"><p class="lbl">Unidades totales</p><p class="val">1.362</p></div>
+        </div>
+        <p class="section-title">Distribución de unidades por tienda — 2.5 mg</p>
+        <div class="chart-wrap" style="height:220px; margin-bottom:1rem;"><canvas id="cH25" role="img" aria-label="Histograma stock 2.5mg. 28 sin stock, 55 con 1-5 unidades, 45 con 6-10, 21 con 11-20, 12 con 21-50, 3 con más de 50."></canvas></div>
+        <p class="section-title">Afectación por ciudad — 2.5 mg</p>
+        <div id="sc25"></div>
+      </div>
+
+      <div id="sp50" class="panel">
+        <div class="kpi-grid">
+          <div class="kpi"><p class="lbl">Total tiendas</p><p class="val">164</p></div>
+          <div class="kpi"><p class="lbl">Con stock</p><p class="val c-ok">133</p><p class="sub">81,1%</p></div>
+          <div class="kpi"><p class="lbl">Sin stock</p><p class="val c-danger">31</p><p class="sub">18,9%</p></div>
+          <div class="kpi"><p class="lbl">Unidades totales</p><p class="val">1.836</p></div>
+        </div>
+        <p class="section-title">Distribución de unidades por tienda — 5 mg</p>
+        <div class="chart-wrap" style="height:220px; margin-bottom:1rem;"><canvas id="cH50" role="img" aria-label="Histograma stock 5mg. 31 sin stock, 34 con 1-5, 36 con 6-10, 38 con 11-20, 20 con 21-50, 5 con 50+."></canvas></div>
+        <p class="section-title">Afectación por ciudad — 5 mg</p>
+        <div id="sc50"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script>
+    /* ---- Navigation ---- */
+    function setMain(t) {
+      ['precios','stock'].forEach(id => {
+        document.getElementById('tab-'+id).classList.toggle('active', id===t);
+        document.getElementById('mainBtn-'+id).classList.toggle('active', id===t);
+      });
+    }
+    function setPrecios(t) {
+      ['25','50'].forEach(id => {
+        document.getElementById('pp'+id).classList.toggle('active', id===t);
+        document.getElementById('pBtn'+id).classList.toggle('active', id===t);
+      });
+    }
+    function setStock(t) {
+      ['25','50'].forEach(id => {
+        document.getElementById('sp'+id).classList.toggle('active', id===t);
+        document.getElementById('sBtn'+id).classList.toggle('active', id===t);
+      });
+    }
+
+    /* ---- Precios charts ---- */
+    const aliadosMeta = [
+      {label:'Aliado 1', color:'#378ADD'},
+      {label:'Aliado 2', color:'#D4537E'},
+      {label:'Aliado 3', color:'#BA7517'},
+      {label:'Aliado 4', color:'#7F77DD'},
+      {label:'Aliado 5', color:'#D85A30'},
+      {label:'Aliado 6', color:'rgba(29,158,117,0.45)'},
+    ];
+    const prices1 = [252150,229525,254650,231500,254500,226800];
+    const prices2 = [334750,306440,338100,307300,338350,335000];
+    const xLabels = ['Aliado 1','Aliado 2','Aliado 3','Aliado 4','Aliado 5','Aliado 6','Cruz Verde'];
+
+    function makePrecios(prices, cvPrice) {
+      const avg = prices.reduce((a,b)=>a+b,0)/prices.length;
+      const ds = aliadosMeta.map((a,i) => ({
+        label: a.label,
+        data: xLabels.map((_,xi) => xi===i ? prices[i] : null),
+        borderColor: a.color, backgroundColor: a.color,
+        borderWidth: 2, pointRadius: 7, pointStyle: 'circle',
+        pointBackgroundColor: a.color, pointBorderColor: '#fff',
+        pointBorderWidth: 1.5, showLine: false,
+      }));
+      ds.push({
+        label: 'Cruz Verde',
+        data: xLabels.map((_,xi) => xi===6 ? cvPrice : null),
+        borderColor: '#1D9E75', backgroundColor: '#1D9E75',
+        borderWidth: 3, pointRadius: 10, pointStyle: 'circle',
+        pointBackgroundColor: '#1D9E75', pointBorderColor: '#fff',
+        pointBorderWidth: 2, showLine: false,
+      });
+      ds.push({
+        label: 'Promedio',
+        data: xLabels.map(() => avg),
+        borderColor: '#888780', backgroundColor: 'transparent',
+        borderWidth: 1.5, borderDash: [6,4],
+        pointRadius: 0, fill: false, tension: 0,
+      });
+      return ds;
+    }
+
+    const pOpts = (mn, mx) => ({
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => ' '+c.dataset.label+': $'+c.parsed.y.toLocaleString('es-CO') } }
+      },
+      scales: {
+        y: { min: mn, max: mx, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k', font:{size:11}, color:'#666' }, grid: { color:'rgba(0,0,0,0.06)' } },
+        x: { ticks: { font:{size:11}, color:'#444' }, grid: { display:false } }
+      }
+    });
+
+    new Chart(document.getElementById('cP25'), { type:'line', data:{labels:xLabels, datasets:makePrecios(prices1,252000)}, options:pOpts(210000,265000) });
+    new Chart(document.getElementById('cP50'), { type:'line', data:{labels:xLabels, datasets:makePrecios(prices2,335000)}, options:pOpts(295000,350000) });
+
+    /* ---- Stock histogramas ---- */
+    const buckets = ['Sin stock','1–5','6–10','11–20','21–50','50+'];
+    const hColors = ['#E24B4A','#F09595','#FAC775','#9FE1CB','#1D9E75','#0F6E56'];
+    const hOpts = {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend:{display:false}, tooltip:{callbacks:{label:c=>' '+c.parsed.y+' tiendas'}} },
+      scales: {
+        y: { ticks:{font:{size:11},color:'#666'}, grid:{color:'rgba(0,0,0,0.06)'} },
+        x: { ticks:{font:{size:11},color:'#444'}, grid:{display:false} }
+      }
+    };
+    new Chart(document.getElementById('cH25'), { type:'bar', data:{labels:buckets, datasets:[{label:'Tiendas',data:[28,55,45,21,12,3],backgroundColor:hColors,borderRadius:4}]}, options:hOpts });
+    new Chart(document.getElementById('cH50'), { type:'bar', data:{labels:buckets, datasets:[{label:'Tiendas',data:[31,34,36,38,20,5],backgroundColor:hColors,borderRadius:4}]}, options:hOpts });
+
+    /* ---- Stock ciudades ---- */
+    const cities25 = [
+      {city:'Tunja',      tiendas:1,  sin:1,  pct:100,  unidades:0},
+      {city:'Bogotá',     tiendas:17, sin:8,  pct:47.1, unidades:172},
+      {city:'Medellín',   tiendas:3,  sin:1,  pct:33.3, unidades:27},
+      {city:'Pereira',    tiendas:4,  sin:1,  pct:25,   unidades:53},
+      {city:'Cali',       tiendas:5,  sin:1,  pct:20,   unidades:26},
+      {city:'Barranquilla',tiendas:3, sin:0,  pct:0,    unidades:179},
+      {city:'Bucaramanga',tiendas:1,  sin:0,  pct:0,    unidades:32},
+      {city:'Cúcuta',     tiendas:2,  sin:0,  pct:0,    unidades:31},
+      {city:'Manizales',  tiendas:1,  sin:0,  pct:0,    unidades:33},
+      {city:'Riohacha',   tiendas:1,  sin:0,  pct:0,    unidades:21},
+      {city:'Sincelejo',  tiendas:1,  sin:0,  pct:0,    unidades:11},
+      {city:'Ibagué',     tiendas:1,  sin:0,  pct:0,    unidades:6},
+    ];
+    const cities50 = [
+      {city:'Tunja',      tiendas:1,  sin:1,  pct:100,  unidades:0},
+      {city:'Bogotá',     tiendas:18, sin:10, pct:55.6, unidades:232},
+      {city:'Pereira',    tiendas:4,  sin:1,  pct:25,   unidades:69},
+      {city:'Cali',       tiendas:4,  sin:0,  pct:0,    unidades:208},
+      {city:'Riohacha',   tiendas:1,  sin:0,  pct:0,    unidades:84},
+      {city:'Cúcuta',     tiendas:2,  sin:0,  pct:0,    unidades:72},
+      {city:'Barranquilla',tiendas:3, sin:0,  pct:0,    unidades:55},
+      {city:'Medellín',   tiendas:3,  sin:0,  pct:0,    unidades:36},
+      {city:'Manizales',  tiendas:1,  sin:0,  pct:0,    unidades:22},
+      {city:'Sincelejo',  tiendas:1,  sin:0,  pct:0,    unidades:20},
+      {city:'Bucaramanga',tiendas:1,  sin:0,  pct:0,    unidades:9},
+      {city:'Ibagué',     tiendas:1,  sin:0,  pct:0,    unidades:3},
+    ];
+
+    function renderCities(data, cid) {
+      const el = document.getElementById(cid);
+      data.forEach(r => {
+        const bc = r.pct===0 ? '#1D9E75' : r.pct>=50 ? '#E24B4A' : r.pct>=25 ? '#BA7517' : '#EF9F27';
+        const pc = r.pct===0 ? 'c-ok' : r.pct>=50 ? 'c-danger' : 'c-warn';
+        el.innerHTML += `<div class="city-row">
+          <span class="city-name" style="font-weight:${r.pct>0?'600':'400'}">${r.city}</span>
+          <div class="city-bar-bg"><div class="city-bar" style="width:${Math.max(r.pct,2)}%;background:${bc};"></div></div>
+          <span class="city-pct ${pc}">${r.pct.toFixed(0)}%</span>
+          <span class="city-meta">${r.sin}/${r.tiendas} sin</span>
+          <span class="city-units">${r.unidades.toLocaleString('es-CO')} uds</span>
+        </div>`;
+      });
+    }
+    renderCities(cities25, 'sc25');
+    renderCities(cities50, 'sc50');
+  </script>
+</body>
+</html>
