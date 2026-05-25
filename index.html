@@ -442,6 +442,123 @@ function mjSetStock(t){['25','50'].forEach(id=>{document.getElementById('sp'+id)
 function initMounjaro(){
   // Mounjaro section removed - monitor de precios only
 }
+const MP_DATA = {"products":[{"name":"Ozempic Solución Inyectable (1 mg)","cat":"Medicamentos para la Diabetes","cv":337350,"status":"MAS CARO","aliados":[301410,290800,302100,301500,303600],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":37468.0,"vs_min":46550.0},{"name":"Enterogermina (2 Millardos)","cat":"Salud digestiva","cv":71400,"status":"MAS BARATO","aliados":[84200,73500,87450,90530,86000],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-12936.0,"vs_min":-2100.0},{"name":"Floratil Suspensión Oral (250 mg)","cat":"Salud digestiva","cv":94900,"status":"MAS CARO","aliados":[83750],"aliado_labels":["Aliado 4"],"vs_prom":11150.0,"vs_min":11150.0},{"name":"Alimento lácteo NAN COMFORT 3 x 800g","cat":"Fórmulas y alimentos","cv":133150,"status":"MAS BARATO","aliados":[144950,148700,145900,145350,135050],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-10840.0,"vs_min":-1900.0},{"name":"Doloff (5 mg / 325 mg)","cat":"Alivio del dolor","cv":126650,"status":"MAS CARO","aliados":[121950,116300,121900,104550],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4"],"vs_prom":10475.0,"vs_min":0},{"name":"Mounjaro (5 mg /0.5 mL)","cat":"Medicamentos para la Diabetes","cv":335000,"status":"PROMEDIO","aliados":[338350,334750,338100,307500,306440],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":9972.0,"vs_min":28560.0},{"name":"Amoxiclin Duo (875 mg / 125 mg)","cat":"Otros medicamentos","cv":110050,"status":"MAS CARO","aliados":[88100,108800,106600,103750],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4"],"vs_prom":8238.0,"vs_min":21950.0},{"name":"Budesynt Aerosol (200 mcg/Dosis)","cat":"Equipo y material médico","cv":162750,"status":"MAS CARO","aliados":[154250,158000,154200],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3"],"vs_prom":7267.0,"vs_min":8550.0},{"name":"Botanitas Citrato de Magnesio","cat":"Salud nutricional","cv":60050,"status":"MAS BARATO","aliados":[66500],"aliado_labels":["Aliado 2"],"vs_prom":-6450.0,"vs_min":-6450.0},{"name":"Healthy America Suplemento Alimenticio Super Magnesium (400 mg)","cat":"Salud nutricional","cv":75350,"status":"MAS BARATO","aliados":[79050,81800,79000,82650,85050],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-6160.0,"vs_min":-3650.0},{"name":"Gestágeno Cápsula Blanda (200 mg)","cat":"Otros medicamentos","cv":196650,"status":"MAS CARO","aliados":[195950,187500,191550,189000,191650],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":5520.0,"vs_min":9150.0},{"name":"Mounjaro (2.5 mg /0.5 mL)","cat":"Medicamentos para la Diabetes","cv":252000,"status":"PROMEDIO","aliados":[254500,252150,254650,231500,292525],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-5065.0,"vs_min":20500.0},{"name":"Fitostimoline Crema (15 %)","cat":"Cuidado dermatológico","cv":95900,"status":"MAS CARO","aliados":[90450,86600,90800,92650,94850],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":4830.0,"vs_min":9300.0},{"name":"Fórmula infantil NESTOGENO Etapa 2 x 1400g","cat":"Fórmulas y alimentos","cv":113700,"status":"MAS BARATO","aliados":[117950,118600,117250,119850],"aliado_labels":["Aliado 1","Aliado 2","Aliado 4","Aliado 5"],"vs_prom":-4712.0,"vs_min":-3550.0},{"name":"Fórmula infantil NAN OPTIPRO 2 x 900g","cat":"Fórmulas y alimentos","cv":135400,"status":"MAS BARATO","aliados":[138950,139600,139250,140850],"aliado_labels":["Aliado 1","Aliado 2","Aliado 4","Aliado 5"],"vs_prom":-4262.0,"vs_min":0},{"name":"Noxpirin Plus Caja X 12 Capsulas","cat":"Gripa y tos","cv":15300,"status":"PROMEDIO","aliados":[14880,18800,19950,19100,21080],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-3462.0,"vs_min":420.0},{"name":"Exelmyo Suplemento Dietario en Sobres","cat":"Salud nutricional","cv":125650,"status":"PROMEDIO","aliados":[114200,128200,137800,134800],"aliado_labels":["Aliado 1","Aliado 2","Aliado 4","Aliado 5"],"vs_prom":-3100.0,"vs_min":11450.0},{"name":"Fitostimoline Limpiador Corporal con Bardana","cat":"Cuidado corporal","cv":53850,"status":"MAS CARO","aliados":[51050,51100,52800,49800,49500],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":3000.0,"vs_min":4350.0},{"name":"Allegra Tabletas (120 mg)","cat":"Alergias","cv":57700,"status":"PROMEDIO","aliados":[55600,69900,68200,55300,54480],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-2996.0,"vs_min":3220.0},{"name":"Vitybell Suplemento Dietario en Cápsulas Blandas","cat":"Salud nutricional","cv":136000,"status":"PROMEDIO","aliados":[130950,132500,133500,128300,141650],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":2620.0,"vs_min":7700.0},{"name":"Genfar Escitalopram Vía oral(10 mg)","cat":"Otros medicamentos","cv":75350,"status":"PROMEDIO","aliados":[72450,84600,71000,80200,80750],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-2450.0,"vs_min":4350.0},{"name":"Fitostimoline Gel (15 %)","cat":"Cuidado dermatológico","cv":59150,"status":"MAS CARO","aliados":[55950,58700,57650,54550,58000],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":2180.0,"vs_min":4600.0},{"name":"Slinda Tabletas Recubiertas (4 mg)","cat":"Salud sexual","cv":50850,"status":"MAS CARO","aliados":[48900,50700,47950,48950,48400],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":1870.0,"vs_min":2900.0},{"name":"Eucerin Protector Solar Oil Control FPS 50 + Toque Seco","cat":"Cuidado facial","cv":146650,"status":"PROMEDIO","aliados":[146650,136600,149000,147450,144850],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":1740.0,"vs_min":10050.0},{"name":"Oscillococcinum Antigripal","cat":"Gripa y tos","cv":102800,"status":"PROMEDIO","aliados":[110300,106700,98700,101800],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4"],"vs_prom":-1575.0,"vs_min":0},{"name":"Alernit Solución Oftálmica (0.2 %)","cat":"Salud visual","cv":48700,"status":"MAS CARO","aliados":[47700,47000],"aliado_labels":["Aliado 2","Aliado 3"],"vs_prom":1350.0,"vs_min":1700.0},{"name":"Dolorsin blister Fem (400 mg / 20 mg)","cat":"Alivio del dolor","cv":10300,"status":"PROMEDIO","aliados":[7950,10400],"aliado_labels":["Aliado 1","Aliado 3"],"vs_prom":1125.0,"vs_min":2350.0},{"name":"Fórmula infantil NAN SUPREMEPRO 1 x 400g","cat":"Fórmulas y alimentos","cv":93300,"status":"PROMEDIO","aliados":[93950,96600,90000,84850,96500],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":920.0,"vs_min":8450.0},{"name":"Avène Crema Reparadora Eau Thermale Cicalfate+","cat":"Cuidado facial","cv":53900,"status":"PROMEDIO","aliados":[51550,52300,55100],"aliado_labels":["Aliado 1","Aliado 3","Aliado 4"],"vs_prom":917.0,"vs_min":2350.0},{"name":"Postday Levonorgestrel (1.5 mg)","cat":"Salud sexual","cv":18950,"status":"MAS CARO","aliados":[17850,18500,17800,18100,18100],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":880.0,"vs_min":1150.0},{"name":"La Roche-Posay Crema Facial Cicaplast Baume B5 +","cat":"Cuidado dermatológico","cv":56850,"status":"PROMEDIO","aliados":[58250,53900,55900],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3"],"vs_prom":833.0,"vs_min":2950.0},{"name":"Congestex (5 mg/ 200 mg/ 20 mg)","cat":"Gripa y tos","cv":18650,"status":"MAS CARO","aliados":[17800,18600,17800,17250],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 5"],"vs_prom":788.0,"vs_min":1400.0},{"name":"Saxenda (6 mg/mL) (3 Plumas)","cat":"Medicamentos para la Diabetes","cv":170900,"status":"PROMEDIO","aliados":[171000,157900,171900,180960,176400],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-732.0,"vs_min":13000.0},{"name":"Sacrusyt Inhalador 200 Dosis (100 mcg)","cat":"Gripa y tos","cv":24250,"status":"PROMEDIO","aliados":[22850,29500,25900,22350,24050],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-680.0,"vs_min":1900.0},{"name":"Dolex Gripa  Alivia los MULTISÍNTOMAS de la Gripa X 12 tabs","cat":"Gripa y tos","cv":19050,"status":"PROMEDIO","aliados":[18050,19100,18600,18300,17850],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":670.0,"vs_min":1200.0},{"name":"Fórmula infantil NAN SUPREMEPRO 2 x 800g","cat":"Fórmulas y alimentos","cv":155150,"status":"PROMEDIO","aliados":[157350,159900,157900,141900,161300],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":-520.0,"vs_min":13250.0},{"name":"Galenicum Medicamento en Cápsulas Blandas Dutasvitae","cat":"Otros medicamentos","cv":73850,"status":"MAS CARO","aliados":[73500],"aliado_labels":["Aliado 3"],"vs_prom":350.0,"vs_min":350.0},{"name":"Electrolit Suero Rehidratante Sabor a Maracuyá","cat":"Salud digestiva","cv":9100,"status":"MAS CARO","aliados":[8800,8900,8750,8650,8750],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":330.0,"vs_min":450.0},{"name":"Fórmula infantil NAN OPTIPRO 2 x 1400g","cat":"Fórmulas y alimentos","cv":178700,"status":"PROMEDIO","aliados":[183950,184500,169900,167050,187250],"aliado_labels":["Aliado 1","Aliado 2","Aliado 3","Aliado 4","Aliado 5"],"vs_prom":170.0,"vs_min":11650.0}],"cats":["Alergias","Alivio del dolor","Cuidado corporal","Cuidado dermatológico","Cuidado facial","Equipo y material médico","Fórmulas y alimentos","Gripa y tos","Medicamentos para la Diabetes","Otros medicamentos","Salud digestiva","Salud nutricional","Salud sexual","Salud visual"]};
+const COLORS = ['#378ADD','#D4537E','#BA7517','#7F77DD','#D85A30','rgba(29,158,117,0.45)'];
+let mpTop = 10;
+let mpCharts = {};
+
+function fmt(n){ return '$'+Math.round(n).toLocaleString('es-CO'); }
+function avg(a){ return a.reduce((s,v)=>s+v,0)/a.length; }
+
+function mpSetTop(n,btn){
+  mpTop=n;
+  document.querySelectorAll('.mp-top-btn').forEach(b=>b.classList.remove('mp-active'));
+  btn.classList.add('mp-active');
+  mpApply();
+}
+
+function mpApply(){
+  const cat    = document.getElementById('mpCat').value;
+  const status = document.getElementById('mpStatus').value;
+  const q      = (document.getElementById('mpSearch').value||'').toLowerCase();
+
+  let rows = MP_DATA.products.filter(p=>{
+    if(cat!=='TODAS' && p.cat!==cat) return false;
+    if(status!=='TODOS' && p.status!==status) return false;
+    if(q && !p.name.toLowerCase().includes(q) && !p.cat.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  rows.sort((a,b)=>Math.abs(b.vs_prom)-Math.abs(a.vs_prom));
+  if(mpTop<999) rows=rows.slice(0,mpTop);
+
+  document.getElementById('mpCount').textContent = rows.length+' productos';
+
+  const caros    = rows.filter(p=>p.status==='MAS CARO');
+  const promedios= rows.filter(p=>p.status==='PROMEDIO');
+  const baratos  = rows.filter(p=>p.status==='MAS BARATO');
+  const avgDiff  = rows.length ? rows.reduce((s,p)=>s+p.vs_prom,0)/rows.length : 0;
+
+  document.getElementById('mpSummary').innerHTML=`
+    <div class="mp-stat"><div class="mp-stat-label">Analizados</div><div class="mp-stat-val">${rows.length}</div></div>
+    <div class="mp-stat"><div class="mp-stat-label">Más caros</div><div class="mp-stat-val" style="color:#FF441B">${caros.length}</div></div>
+    <div class="mp-stat"><div class="mp-stat-label">En promedio</div><div class="mp-stat-val" style="color:#2B4BB5">${promedios.length}</div></div>
+    <div class="mp-stat"><div class="mp-stat-label">Más baratos</div><div class="mp-stat-val" style="color:#1A7A3C">${baratos.length}</div></div>
+    <div class="mp-stat"><div class="mp-stat-label">∆ prom. vs mercado</div><div class="mp-stat-val" style="color:${avgDiff>0?'#FF441B':'#1A7A3C'}">${avgDiff>0?'+':''}${fmt(avgDiff)}</div></div>`;
+
+  mpRenderSection(caros,    'mpGridCaro',   'mpCountCaro');
+  mpRenderSection(promedios,'mpGridProm',   'mpCountProm');
+  mpRenderSection(baratos,  'mpGridBarato', 'mpCountBarato');
+}
+
+function mpRenderSection(items, gridId, countId){
+  document.getElementById(countId).textContent = items.length;
+  const grid = document.getElementById(gridId);
+  if(!items.length){ grid.innerHTML='<div class="mp-empty">Sin productos</div>'; return; }
+  grid.innerHTML = items.map((p,i)=>mpCard(p, gridId+'_'+i)).join('');
+  items.forEach((p,i)=>setTimeout(()=>mpChart(p, gridId+'_'+i), 40*i));
+}
+
+function mpCard(p, uid){
+  const a=avg(p.aliados), diff=p.vs_prom, pct=a>0?((diff/a)*100).toFixed(1):0;
+  const badge=p.status==='MAS CARO'?'caro':p.status==='MAS BARATO'?'barato':'prom';
+  const badgeTxt=p.status==='MAS CARO'?'Más caro':p.status==='MAS BARATO'?'Más barato':'Promedio';
+  return `<div class="mp-card">
+    <div class="mp-card-hdr">
+      <div><div class="mp-prod-name">${p.name}</div><div class="mp-prod-cat">${p.cat}</div></div>
+      <span class="mp-badge ${badge}">${badgeTxt}</span>
+    </div>
+    <div class="mp-kpis">
+      <div class="mp-kpi"><div class="mp-kpi-lbl">Cruz Verde</div><div class="mp-kpi-val cv">${fmt(p.cv)}</div></div>
+      <div class="mp-kpi"><div class="mp-kpi-lbl">Prom. mercado</div><div class="mp-kpi-val">${fmt(a)}</div></div>
+      <div class="mp-kpi"><div class="mp-kpi-lbl">∆ vs promedio</div><div class="mp-kpi-val ${diff>0?'neg':'pos'}">${diff>0?'+':''}${fmt(diff)}</div><div class="mp-kpi-sub">${diff>0?'+':''}${pct}%</div></div>
+      <div class="mp-kpi"><div class="mp-kpi-lbl">∆ vs mínimo</div><div class="mp-kpi-val ${p.vs_min>0?'neg':'pos'}">${p.vs_min>0?'+':''}${fmt(p.vs_min)}</div><div class="mp-kpi-sub">Mín: ${fmt(Math.min(...p.aliados))}</div></div>
+    </div>
+    <div class="mp-chart-area">
+      <div class="mp-legend">
+        <div class="mp-leg-item"><div style="width:16px;height:3px;background:#1D9E75;border-radius:2px;"></div><strong>Cruz Verde</strong></div>
+        <div class="mp-leg-item"><div style="width:16px;border-top:2px dashed #888;"></div>Promedio</div>
+        ${p.aliado_labels.map((l,i)=>`<div class="mp-leg-item"><div class="mp-leg-dot" style="background:${COLORS[i]};"></div>${l}</div>`).join('')}
+      </div>
+      <div class="mp-canvas"><canvas id="mc_${uid}"></canvas></div>
+    </div>
+  </div>`;
+}
+
+function mpChart(p, uid){
+  const cid='mc_'+uid;
+  if(mpCharts[cid]) mpCharts[cid].destroy();
+  const el=document.getElementById(cid);
+  if(!el) return;
+  const a=avg(p.aliados);
+  const labels=[...p.aliado_labels,'Cruz Verde'];
+  const ds=p.aliados.map((v,i)=>({
+    label:p.aliado_labels[i], data:labels.map((_,xi)=>xi===i?v:null),
+    borderColor:COLORS[i], backgroundColor:COLORS[i],
+    borderWidth:2, pointRadius:8, pointBackgroundColor:COLORS[i],
+    pointBorderColor:'#fff', pointBorderWidth:1.5, showLine:false
+  }));
+  ds.push({label:'Cruz Verde',data:labels.map((_,xi)=>xi===labels.length-1?p.cv:null),
+    borderColor:'#1D9E75',backgroundColor:'#1D9E75',borderWidth:3,pointRadius:11,
+    pointBackgroundColor:'#1D9E75',pointBorderColor:'#fff',pointBorderWidth:2,showLine:false});
+  ds.push({label:'Promedio',data:labels.map(()=>a),
+    borderColor:'#888',backgroundColor:'transparent',borderWidth:1.5,
+    borderDash:[6,4],pointRadius:0,fill:false,tension:0});
+  const all=[...p.aliados,p.cv];
+  const span=Math.max(...all)-Math.min(...all);
+  mpCharts[cid]=new Chart(el,{
+    type:'line', data:{labels,datasets:ds},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{
+        y:{min:Math.min(...all)-span*.2,max:Math.max(...all)+span*.2,
+          ticks:{callback:v=>v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+(v/1000).toFixed(0)+'k',font:{size:10},color:'#666'},
+          grid:{color:'rgba(0,0,0,0.06)'}},
+        x:{ticks:{font:{size:11},color:'#444'},grid:{display:false}}
+      }}
+  });
+}
+
 function initMonitorPrecios(){
   mpApply();
 }
